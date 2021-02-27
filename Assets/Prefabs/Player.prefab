@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7312003292585594888}
   - component: {fileID: 7312003292585594891}
   - component: {fileID: 7312003292585594893}
+  - component: {fileID: 852320729}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -144,5 +145,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackHolePrefab: {fileID: 3862509017819229934, guid: 0a9d30bbf4c76ed438c713100826b2da,
+    type: 3}
+  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
+--- !u!114 &852320729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7312003292585594890}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7a3f6a0491b43409a203805a377be7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beamPrefab: {fileID: 5869203408495095527, guid: b04e0191b77f93c458d3a4c2fa8a2ba8,
     type: 3}
   _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
