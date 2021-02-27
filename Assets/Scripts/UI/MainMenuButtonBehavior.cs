@@ -5,10 +5,10 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class MainMenuButtonBehavior : MonoBehaviour
 {
-    [SerializeField, NotNull]
+    [SerializeField]
     private GameObject MainMenuPanel;
     
-    [SerializeField, NotNull]
+    [SerializeField]
     private GameObject GoToPanel;
 
 
