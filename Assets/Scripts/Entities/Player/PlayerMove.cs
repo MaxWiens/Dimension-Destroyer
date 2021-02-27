@@ -76,8 +76,8 @@ public class PlayerMove : MonoBehaviour {
 		//Debug.DrawRay(transform.position, _groundNormal, Color.blue);
 		if(_isJumping)
 			_jumpTimer += Time.deltaTime;
-		Debug.Log($"IsJumping: {_isJumping}");
-		Debug.Log($"IsGrounded: {IsGrounded}");
+		//Debug.Log($"IsJumping: {_isJumping}");
+		//Debug.Log($"IsGrounded: {IsGrounded}");
 	}
 
 	private void FixedUpdate() {
