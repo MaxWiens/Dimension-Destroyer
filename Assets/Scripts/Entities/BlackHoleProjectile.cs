@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BlackHoleProjectile : MonoBehaviour
 {
+    [SerializeField, NotNull] private EnviornmentManagerSO _enviornmentManager = default;
+
     private readonly float timeToEnableCollider = 1 / 3f;
     private readonly float timeToExplode = 3f;
 
@@ -70,6 +72,7 @@ public class BlackHoleProjectile : MonoBehaviour
             Destroy(g);
         }
         Destroy(gameObject);
+        _enviornmentManager.RebuildNavMesh();
     }
 
     private IEnumerator ChangeScale(float scalePerSecond)

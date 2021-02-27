@@ -6,6 +6,8 @@ public class BeamProjectile : MonoBehaviour
 {
     private GameObject user;
 
+    [SerializeField, NotNull] private EnviornmentManagerSO _enviornmentManager = default;
+
     private void Start()
     {
         StartCoroutine(ResizeAndDestroy());

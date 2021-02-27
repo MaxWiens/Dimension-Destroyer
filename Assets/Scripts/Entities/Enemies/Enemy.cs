@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour {
 	public Transform PlayerTransform { set => _playerTransform = value; }
 
 	[SerializeField, NotNull] private NavMeshAgent _agent = default;
+	[SerializeField, NotNull] private EnemyAttack _attack = default;
 	[SerializeField] private float _speed = 5f;
 
 	[Header("Wandering")]
@@ -35,6 +36,8 @@ public class Enemy : MonoBehaviour {
 	private float _wanderTimer = 0f;
 	private Vector3 _wanderMoveVec = Vector3.zero;
 
+	private float _attackTimer = 1f;
+
 	private void OnEnable() {
 		if(_playerTransform == null) _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 	}
@@ -55,12 +58,21 @@ public class Enemy : MonoBehaviour {
 				// check distance from player
 				if(dif.sqrMagnitude > _detectionRange*_detectionRange)
 					UpdateAgro(Time.fixedDeltaTime);
-				else
+				else if(dif.sqrMagnitude <= _maxAttackRange*_maxAttackRange){
+					State = EnemyState.WithinRange;
+					_agent.ResetPath();
+				}else
 					FollowPlayer();
 				break;
 			case EnemyState.WithinRange:
 				if(dif.sqrMagnitude > _maxAttackRange*_maxAttackRange){
 					State = EnemyState.Seeking;
+				}else{
+					if(_attackTimer <= 0f){
+						_attackTimer += Random.Range(3f,5f);
+						_attack.Attack(_playerTransform.position);
+					}
+					_attackTimer -= Time.fixedDeltaTime;
 				}
 				break;
 		}

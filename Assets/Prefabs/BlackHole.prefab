@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e207283e4856ea243b887212a5785e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enviornmentManager: {fileID: 11400000, guid: 514585a2af2e05a47bc36bc052475906,
+    type: 2}
   maxScale: 9
   expansionTime: 3
   contractionTime: 0.33333334
