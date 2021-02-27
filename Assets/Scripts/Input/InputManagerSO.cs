@@ -27,6 +27,7 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 			_gameInputs.Always.SetCallbacks(this);
 			_gameInputs.Enable();
 		}
+		Sensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivity"), PlayerPrefs.GetFloat("sensitivity"));
 	}
 
 	public void ToggleUIInput(bool enabled) {
