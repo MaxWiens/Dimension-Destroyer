@@ -72,7 +72,8 @@ public class BlackHoleProjectile : MonoBehaviour
             Destroy(g);
         }
         Destroy(gameObject);
-        _enviornmentManager.RebuildNavMesh();
+        if(toDelete.Count > 0)
+            _enviornmentManager.RebuildNavMesh();
     }
 
     private IEnumerator ChangeScale(float scalePerSecond)

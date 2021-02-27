@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour {
 
 	[SerializeField, NotNull] private NavMeshAgent _agent = default;
 	[SerializeField, NotNull] private EnemyAttack _attack = default;
+	[SerializeField, NotNull] public GameObject _navMeshLinkPrefab = default;
 	[SerializeField] private float _speed = 5f;
 
 	[Header("Wandering")]
@@ -29,6 +30,7 @@ public class Enemy : MonoBehaviour {
 	[Header("WithinRange")]
 	[SerializeField] private float _minAttackRange = 10f;
 	[SerializeField] private float _maxAttackRange = 15f;
+	public const float MAX_DROP_HEIGHT = float.PositiveInfinity;
 
 	private float _agroTimer = 0f;
 	private Transform _playerTransform = default;
@@ -37,6 +39,9 @@ public class Enemy : MonoBehaviour {
 	private Vector3 _wanderMoveVec = Vector3.zero;
 
 	private float _attackTimer = 1f;
+
+	private NavMeshLink _link;
+	private float _linkLifeTimer = 0f;
 
 	private void OnEnable() {
 		if(_playerTransform == null) _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -70,13 +75,18 @@ public class Enemy : MonoBehaviour {
 				}else{
 					if(_attackTimer <= 0f){
 						_attackTimer += Random.Range(3f,5f);
-						_attack.Attack(_playerTransform.position);
+						//_attack.Attack(_playerTransform.position);
 					}
 					_attackTimer -= Time.fixedDeltaTime;
 				}
 				break;
 		}
-		Debug.Log(State);
+		if(_link != null && _link.enabled){
+			_linkLifeTimer -= Time.fixedDeltaTime;
+			if(_linkLifeTimer <= 0f){
+				_link.enabled = false;
+			}
+		}
 	}
 
 	private void UpdateAgro(float deltaTime){
@@ -92,6 +102,21 @@ public class Enemy : MonoBehaviour {
 		if(!_agent.SetDestination(_playerTransform.position)){
 			Debug.LogWarning("Enemy failed to find path to player :(");
 		}
+		if(_agent.remainingDistance <= 0.001f && _playerTransform.position.y < _agent.pathEndPosition.y){
+			//jump down
+			Vector3 dif = _playerTransform.position - _agent.pathEndPosition;
+			// get vector slightly out from platform
+			dif.y = 0;
+			Vector3 top = transform.position+dif.normalized*_agent.radius*5f;
+			if(Physics.Raycast(top, Vector3.down, out RaycastHit hit, MAX_DROP_HEIGHT, ~LayerMask.GetMask("Enviornment"), QueryTriggerInteraction.Ignore) && NavMesh.SamplePosition(hit.point ,out NavMeshHit navMeshHit, 5f, NavMesh.AllAreas)){
+				if(_link == null) _link = Instantiate(_navMeshLinkPrefab).GetComponent<NavMeshLink>();
+				else _link.enabled = true;
+				_link.startPoint = _agent.pathEndPosition;
+				_link.endPoint = navMeshHit.position;
+				_linkLifeTimer = 5f;
+			}
+		}
+
 	}
 
 	private void Wander(float deltaTime){

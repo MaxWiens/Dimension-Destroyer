@@ -20,6 +20,10 @@ public class EnviornmentManager : MonoBehaviour {
 		_managerSO.Manager = null;
 	}
 
+	private void Start() {
+		_navMeshSurface.BuildNavMesh();
+	}
+
 	private void FixedUpdate() {
 		 if(_shouldRebuild){
 			 _navMeshSurface.BuildNavMesh();
