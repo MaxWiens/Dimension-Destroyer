@@ -330,7 +330,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -429,6 +429,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 424209840}
+  _speed: 5
+  _wanderSpeed: 2.5
+  _minCirclingDistance: 10
+  _maxCirclingDistance: 15
+  _detectionRange: 30
+  _agroTime: 5
+  _minWanderTime: 0.5
+  _maxWanderTime: 4
 --- !u!1 &955820546
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +685,7 @@ Transform:
   m_GameObject: {fileID: 1485914867}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.6771336, y: -4.241556, z: -13.118772}
-  m_LocalScale: {x: 41.292534, y: 1, z: 103.587456}
+  m_LocalScale: {x: 41.292534, y: 1, z: 943.5782}
   m_Children: []
   m_Father: {fileID: 955820547}
   m_RootOrder: 0
