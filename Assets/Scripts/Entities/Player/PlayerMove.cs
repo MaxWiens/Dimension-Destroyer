@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using System.Linq;
+using System;
 
 public class PlayerMove : MonoBehaviour {
 	public float MaxSlope = 80f;
@@ -8,11 +11,12 @@ public class PlayerMove : MonoBehaviour {
 	public float InitalJumpForce = 8f;
 	public float HoldJumpForce = 18f;
 	public bool IsGrounded => _groundingObjects.Count > 0;
+
 	private Vector3 _groundNormal = Vector3.up;
 	public Vector3 GroundNormal => _groundNormal;
 	[SerializeField, NotNull] private Rigidbody _rigidBody;
-	private HashSet<GameObject> _groundingObjects = new HashSet<GameObject>();
-	private HashSet<GameObject> _wallObjects = new HashSet<GameObject>();
+	private List<Bag> _groundingObjects = new List<Bag>();
+	private List<Bag> _wallObjects = new List<Bag>();
 	private Vector3 _wallNormal = Vector3.zero;
 
 	[SerializeField, NotNull] private InputManagerSO _inputs;
@@ -80,7 +84,24 @@ public class PlayerMove : MonoBehaviour {
 		//Debug.Log($"IsGrounded: {IsGrounded}");
 	}
 
+	private bool IsBagPred(Bag b)=>b.Key == null;
+
 	private void FixedUpdate() {
+		if(_wallObjects.RemoveAll(IsBagPred) > 0){
+			 if(_wallObjects.Count == 0){
+				_wallNormal = Vector3.zero;
+			 }else{
+				_wallNormal = _wallObjects.First().Value;
+			 }
+		}
+		if(_groundingObjects.RemoveAll(IsBagPred) > 0){
+			if(_groundingObjects.Count == 0){
+				_groundNormal = Vector3.up;
+			 }else{
+				_groundNormal = _groundingObjects.First().Value;
+			 }
+		}
+
 		Jump();
 
 		Vector3 camForward = Camera.main.transform.forward;
@@ -116,13 +137,13 @@ public class PlayerMove : MonoBehaviour {
 			float f = Vector3.Angle(contactPoint.normal, Vector3.up);
 			if(f <= MaxSlope){
 				_groundNormal = contactPoint.normal;
-				_groundingObjects.Add(other.gameObject);
+				_groundingObjects.Add(new Bag(other.gameObject, _groundNormal));
 				//Debug.Log($"new normal {f}");
 				break;
 			}else if(f <= 180 - MaxSlope){
 				//Debug.Log($"wall normal? {f}");
 				_wallNormal= contactPoint.normal;
-				_wallObjects.Add(other.gameObject);
+				_wallObjects.Add(new Bag(other.gameObject, _wallNormal));
 			}else{
 				//Debug.Log($"celing normal? {f}");
 			}
@@ -131,28 +152,25 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	private void OnCollisionStay(Collision other) {
-		if(_groundingObjects.Contains(other.gameObject)){
-
-			float maxY = Mathf.Sin(Mathf.Deg2Rad*MaxSlope);
+		if(_groundingObjects.Remove(new Bag(other.gameObject))){
 			bool isGood = false;
 			foreach(ContactPoint contactPoint in other.contacts){
 				float f = Vector3.Angle(contactPoint.normal, Vector3.up);
 				if(f <= MaxSlope){
 					// is floor
 					_groundNormal = contactPoint.normal;
-					_groundingObjects.Add(other.gameObject);
+					_groundingObjects.Add(new Bag(other.gameObject, _groundNormal));
 					isGood = true;
 					break;
 				}else if(f <= 180 - MaxSlope){
 					//Debug.Log($"wall normal? {f}");
 					_wallNormal= contactPoint.normal;
-					_wallObjects.Add(other.gameObject);
+					_wallObjects.Add(new Bag(other.gameObject, _wallNormal));
 				}else{
 					//Debug.Log($"celing normal? {f}");
 				}
 			}
 			if(!isGood){
-				_groundingObjects.Remove(other.gameObject);
 				_groundNormal = Vector3.up;
 			}
 		}
@@ -161,15 +179,28 @@ public class PlayerMove : MonoBehaviour {
 
 
 	private void OnCollisionExit(Collision other) {
-
-		if(_groundingObjects.Remove(other.gameObject)){
+		if(_groundingObjects.Remove(new Bag(other.gameObject))){
 			if(_groundingObjects.Count == 0)
 				_groundNormal = Vector3.up;
 			return;
-		}else if(_wallObjects.Remove(other.gameObject)){
+		}else if(_wallObjects.Remove(new Bag(other.gameObject))){
 			if(_wallObjects.Count == 0)
 				_wallNormal = Vector3.zero;
 			return;
+		}
+	}
+
+	private struct Bag{
+		public GameObject Key;
+		public Vector3 Value;
+
+		public Bag(GameObject key){
+			Key = key;
+			Value = Vector3.zero;
+		}
+		public Bag(GameObject key, Vector3 value){
+			Key = key;
+			Value = value;
 		}
 	}
 }
