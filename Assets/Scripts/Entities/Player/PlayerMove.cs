@@ -57,14 +57,14 @@ public class PlayerMove : MonoBehaviour {
 	private void Update() {
 		Debug.DrawRay(transform.position, _groundNormal, Color.blue);
 		_moveVec = new Vector2();
-		if(Input.GetKey(KeyCode.W)) _moveVec.y = 1;
-		if(Input.GetKey(KeyCode.A)) _moveVec.x = -1;
-		if(Input.GetKey(KeyCode.S)) _moveVec.y -= 1;
-		if(Input.GetKey(KeyCode.D)) _moveVec.x += 1;
-		if(Input.GetKey(KeyCode.Space))
-			_jumpPressed = true;
-		else
-			_jumpPressed = false;
+		// if(Input.GetKey(KeyCode.W)) _moveVec.y = 1;
+		// if(Input.GetKey(KeyCode.A)) _moveVec.x = -1;
+		// if(Input.GetKey(KeyCode.S)) _moveVec.y -= 1;
+		// if(Input.GetKey(KeyCode.D)) _moveVec.x += 1;
+		// if(Input.GetKey(KeyCode.Space))
+		// 	_jumpPressed = true;
+		// else
+		// 	_jumpPressed = false;
 
 		if(_isJumping)
 			_jumpTimer += Time.deltaTime;
