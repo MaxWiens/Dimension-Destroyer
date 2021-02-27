@@ -259,6 +259,44 @@ public class @GameInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Always"",
+            ""id"": ""96aba2cc-1523-4fb8-8adc-39119b99610a"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""98aca5b0-b4fe-4eb4-9060-36659ca45a77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6afbc8b7-b365-43e5-91d4-ec6044e5e105"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26d6b4cd-8b4d-47f7-b418-6a708a08c0f0"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -270,6 +308,9 @@ public class @GameInputs : IInputActionCollection, IDisposable
         m_Gameplay_ToggleCameraLock = m_Gameplay.FindAction("ToggleCameraLock", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
+        // Always
+        m_Always = asset.FindActionMap("Always", throwIfNotFound: true);
+        m_Always_Pause = m_Always.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -380,6 +421,39 @@ public class @GameInputs : IInputActionCollection, IDisposable
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // Always
+    private readonly InputActionMap m_Always;
+    private IAlwaysActions m_AlwaysActionsCallbackInterface;
+    private readonly InputAction m_Always_Pause;
+    public struct AlwaysActions
+    {
+        private @GameInputs m_Wrapper;
+        public AlwaysActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Always_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Always; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(AlwaysActions set) { return set.Get(); }
+        public void SetCallbacks(IAlwaysActions instance)
+        {
+            if (m_Wrapper.m_AlwaysActionsCallbackInterface != null)
+            {
+                @Pause.started -= m_Wrapper.m_AlwaysActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_AlwaysActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_AlwaysActionsCallbackInterface.OnPause;
+            }
+            m_Wrapper.m_AlwaysActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+            }
+        }
+    }
+    public AlwaysActions @Always => new AlwaysActions(this);
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -387,5 +461,9 @@ public class @GameInputs : IInputActionCollection, IDisposable
         void OnToggleCameraLock(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+    }
+    public interface IAlwaysActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public int energyCells;
+    public int lenses;
 
     private void Start()
     {

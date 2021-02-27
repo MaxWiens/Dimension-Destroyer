@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "InputManager", menuName = "GameJam/InputManager", order = 0)]
-public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
+public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, GameInputs.IAlwaysActions {
 	[SerializeField]
 	public bool InvertXCamera;
 	[SerializeField]
@@ -17,18 +17,27 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 	public event UnityAction<bool> Jump;
 	public event UnityAction<Vector2> CameraRotated;
 	public event UnityAction<bool> Shoot;
+	public event UnityAction<bool> Pause;
 	private GameInputs _gameInputs;
 
 	private void OnEnable() {
 		if(_gameInputs == null) {
 			_gameInputs = new GameInputs();
 			_gameInputs.Gameplay.SetCallbacks(this);
+			_gameInputs.Always.SetCallbacks(this);
 			_gameInputs.Enable();
 		}
 	}
 
-	public void EnableUIInput() {
-
+	public void ToggleUIInput(bool enabled) {
+		if (enabled)
+        {
+			_gameInputs.Gameplay.Disable();
+        }
+		else
+        {
+			_gameInputs.Gameplay.Enable();
+        }
 	}
 
 	public void OnJump(InputAction.CallbackContext context) {
@@ -42,6 +51,11 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 	public void OnShoot(InputAction.CallbackContext context)
 	{
 		Shoot?.Invoke(context.phase == InputActionPhase.Performed);
+	}
+
+	public void OnPause(InputAction.CallbackContext context)
+	{
+		Pause?.Invoke(context.phase == InputActionPhase.Performed);
 	}
 
 	public void OnRotateCamera(InputAction.CallbackContext context) {

@@ -7,6 +7,7 @@ public class Pickup : MonoBehaviour
     public enum PickupType
     {
         EnergyCell,
+        Lens,
     }
 
     public PickupType pickupType;
