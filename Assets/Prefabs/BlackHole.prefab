@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3862509017819229925}
   - component: {fileID: 3862509017819229924}
   - component: {fileID: 4058321552385006624}
-  - component: {fileID: -7148015198072977992}
+  - component: {fileID: 8841910261430330331}
   m_Layer: 9
   m_Name: BlackHole
   m_TagString: Untagged
@@ -60,6 +60,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -84,6 +85,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &3862509017819229921
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -93,7 +95,7 @@ SphereCollider:
   m_GameObject: {fileID: 3862509017819229934}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -184,14 +186,15 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &-7148015198072977992
+--- !u!114 &8841910261430330331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,11 +203,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3862509017819229934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: cc81373d2995ef041b2bdc6fb9568497, type: 2}
-  isGlobal: 0
-  blendDistance: 1
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
   weight: 1
-  priority: 1
+  sharedProfile: {fileID: 11400000, guid: eea4f38d012d5ae498e9602569166f35, type: 2}
