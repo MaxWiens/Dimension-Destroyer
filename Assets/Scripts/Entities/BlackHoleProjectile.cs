@@ -27,7 +27,7 @@ public class BlackHoleProjectile : MonoBehaviour
             touched = true;
             StartCoroutine(DoEffect());
             Rigidbody rigidbody = GetComponent<Rigidbody>();
-            rigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            rigidbody.velocity = Vector3.zero;
         }
     }
 
