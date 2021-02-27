@@ -15,9 +15,27 @@ public class PlayerMove : MonoBehaviour {
 	private HashSet<GameObject> _wallObjects = new HashSet<GameObject>();
 	private Vector3 _wallNormal = Vector3.zero;
 
+	[SerializeField, NotNull] private InputManagerSO _inputs;
+
 	private bool _isJumping = false;
 	private float _jumpTimer = 0f;
 	private float _jumpIncreaseTime = 0.5f;
+
+	private void OnEnable() {
+		_inputs.Moved += OnMove;
+		_inputs.Jump += OnJump;
+	}
+
+	private void OnDisable() {
+		_inputs.Moved -= OnMove;
+		_inputs.Jump -= OnJump;
+	}
+
+	private void OnMove(Vector2 moveDir)
+		=> _moveVec = moveDir;
+
+	private void OnJump(bool pressed)
+		=> _jumpPressed = pressed;
 
 	public void Move(Vector2 direction){
 		if(direction.x != 0 || direction.y != 0){
@@ -55,17 +73,7 @@ public class PlayerMove : MonoBehaviour {
 	private Vector2 _moveVec = new Vector2();
 	private bool _jumpPressed = false;
 	private void Update() {
-		Debug.DrawRay(transform.position, _groundNormal, Color.blue);
-		_moveVec = new Vector2();
-		// if(Input.GetKey(KeyCode.W)) _moveVec.y = 1;
-		// if(Input.GetKey(KeyCode.A)) _moveVec.x = -1;
-		// if(Input.GetKey(KeyCode.S)) _moveVec.y -= 1;
-		// if(Input.GetKey(KeyCode.D)) _moveVec.x += 1;
-		// if(Input.GetKey(KeyCode.Space))
-		// 	_jumpPressed = true;
-		// else
-		// 	_jumpPressed = false;
-
+		//Debug.DrawRay(transform.position, _groundNormal, Color.blue);
 		if(_isJumping)
 			_jumpTimer += Time.deltaTime;
 		Debug.Log($"IsJumping: {_isJumping}");

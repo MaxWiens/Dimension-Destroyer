@@ -41,6 +41,14 @@ public class @GameInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""75748263-fc19-4072-a40e-8dd716415279"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -197,6 +205,28 @@ public class @GameInputs : IInputActionCollection, IDisposable
                     ""action"": ""ToggleCameraLock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e55b42f-2745-4ba7-b435-0c3b920c9993"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59b71ce4-2157-43dd-b646-f1597189c44b"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +238,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
         m_Gameplay_ToggleCameraLock = m_Gameplay.FindAction("ToggleCameraLock", throwIfNotFound: true);
+        m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -260,6 +291,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_RotateCamera;
     private readonly InputAction m_Gameplay_ToggleCameraLock;
+    private readonly InputAction m_Gameplay_Jump;
     public struct GameplayActions
     {
         private @GameInputs m_Wrapper;
@@ -267,6 +299,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
         public InputAction @ToggleCameraLock => m_Wrapper.m_Gameplay_ToggleCameraLock;
+        public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -285,6 +318,9 @@ public class @GameInputs : IInputActionCollection, IDisposable
                 @ToggleCameraLock.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnToggleCameraLock;
                 @ToggleCameraLock.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnToggleCameraLock;
                 @ToggleCameraLock.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnToggleCameraLock;
+                @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -298,6 +334,9 @@ public class @GameInputs : IInputActionCollection, IDisposable
                 @ToggleCameraLock.started += instance.OnToggleCameraLock;
                 @ToggleCameraLock.performed += instance.OnToggleCameraLock;
                 @ToggleCameraLock.canceled += instance.OnToggleCameraLock;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -307,5 +346,6 @@ public class @GameInputs : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnToggleCameraLock(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

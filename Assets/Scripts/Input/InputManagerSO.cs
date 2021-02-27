@@ -5,7 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "InputManager", menuName = "MultiplayerExample/InputManager", order = 0)]
+[CreateAssetMenu(fileName = "InputManager", menuName = "GameJam/InputManager", order = 0)]
 public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 	[SerializeField]
 	public bool InvertXCamera;
@@ -14,6 +14,7 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 	[SerializeField]
 	public Vector2 Sensitivity = new Vector2(0.5f,0.5f);
 	public event UnityAction<Vector2> Moved;
+	public event UnityAction<bool> Jump;
 	public event UnityAction<Vector2> CameraRotated;
 	private GameInputs _gameInputs;
 
@@ -27,6 +28,10 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 
 	public void EnableUIInput() {
 
+	}
+
+	public void OnJump(InputAction.CallbackContext context) {
+		Jump?.Invoke(context.ReadValue<float>() == 1f);
 	}
 
 	public void OnMove(InputAction.CallbackContext context) {
