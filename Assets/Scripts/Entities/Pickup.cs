@@ -22,6 +22,9 @@ public class Pickup : MonoBehaviour
                 case PickupType.EnergyCell:
                     stats.energyCells++;
                     break;
+                case PickupType.Lens:
+                    stats.lenses += 3;
+                    break;
             }
             Destroy(gameObject);
         }

@@ -2,14 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBeamGun : MonoBehaviour
+public class PlayerBeamGun : AbstractGun
 {
 	[SerializeField, NotNull] private GameObject beamPrefab;
-	[SerializeField, NotNull] private InputManagerSO _inputs;
 
 	private GameObject beamInstance;
+	private bool onCooldown;
 
-	private void OnEnable()
+    public override string Name => "Beam Gun";
+
+    private void Start()
+    {
+		onCooldown = false;
+
+	}
+
+    private void OnEnable()
 	{
 		_inputs.Shoot += ShootBeamGun;
 		beamInstance = null;
@@ -22,11 +30,20 @@ public class PlayerBeamGun : MonoBehaviour
 
 	private void ShootBeamGun(bool pressed)
 	{
-		if (pressed && beamInstance == null)
+		if (pressed && !onCooldown && beamInstance == null && playerStats.lenses > 0 || true)
 		{
+			playerStats.lenses--;
+			StartCoroutine(DoCooldown());
 			beamInstance = Instantiate(beamPrefab, transform.position, Quaternion.identity);
 			BeamProjectile script = beamInstance.GetComponent<BeamProjectile>();
 			script.SetPosition(gameObject, Camera.main.transform);
 		}
 	}
+
+	private IEnumerator DoCooldown()
+    {
+		onCooldown = true;
+		yield return new WaitForSeconds(2);
+		onCooldown = false;
+    }
 }

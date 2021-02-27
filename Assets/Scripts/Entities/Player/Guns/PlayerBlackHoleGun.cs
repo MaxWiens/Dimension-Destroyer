@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBlackHoleGun : MonoBehaviour
+public class PlayerBlackHoleGun : AbstractGun
 {
 	[SerializeField, NotNull] private GameObject blackHolePrefab;
-	[SerializeField, NotNull] private InputManagerSO _inputs;
 
-	private void OnEnable()
+    public override string Name => "Void Gun";
+
+    private void OnEnable()
 	{
 		_inputs.Shoot += ShootBlackHoleGun;
 	}
@@ -21,8 +22,8 @@ public class PlayerBlackHoleGun : MonoBehaviour
     {
 		if (pressed)
 		{
-			Vector3 vel = Camera.main.transform.forward;
-			Rigidbody rigidbody = Instantiate(blackHolePrefab, transform.position + vel, Quaternion.identity).GetComponent<Rigidbody>();
+			Vector3 vel = Camera.main.transform.forward * 3;
+			Rigidbody rigidbody = Instantiate(blackHolePrefab, transform.position + vel / 3f, Quaternion.identity).GetComponent<Rigidbody>();
 			rigidbody.velocity = vel;
 		}
     }

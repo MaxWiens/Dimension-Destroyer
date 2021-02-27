@@ -91,14 +91,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7312003292585594890}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d73f3622925a4aa49b0fe1e72f31f9ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
+  playerStats: {fileID: 1201551004}
   blackHolePrefab: {fileID: 3862509017819229934, guid: 0a9d30bbf4c76ed438c713100826b2da,
     type: 3}
-  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
 --- !u!114 &852320729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,14 +107,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7312003292585594890}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d7a3f6a0491b43409a203805a377be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
+  playerStats: {fileID: 1201551004}
   beamPrefab: {fileID: 5869203408495095527, guid: b04e0191b77f93c458d3a4c2fa8a2ba8,
     type: 3}
-  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
 --- !u!114 &1201551004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,3 +129,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyCells: 0
+  lenses: 0
+  weapons:
+  - {fileID: 7312003292585594893}
+  - {fileID: 852320729}
+  currentWeaponIndex: 0
+  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}

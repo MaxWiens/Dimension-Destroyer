@@ -57,6 +57,14 @@ public class @GameInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeGun"",
+                    ""type"": ""Value"",
+                    ""id"": ""e8742ff2-400a-4123-87f9-439e61b19c5c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -257,6 +265,72 @@ public class @GameInputs : IInputActionCollection, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c633307-873b-4fdb-843b-d0b0e02469e6"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""75939682-5b83-4a42-9172-d4bcb66d116f"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeGun"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""cb13e6d5-9df1-45bb-b0ba-2f7effa3f195"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b3adea9e-8d1e-4382-9e59-1afa2291b0a7"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""728a9720-1199-45fd-9147-5712c306eba6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9d445846-286e-4ecf-b296-a4b1bb085175"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -308,6 +382,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
         m_Gameplay_ToggleCameraLock = m_Gameplay.FindAction("ToggleCameraLock", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
+        m_Gameplay_ChangeGun = m_Gameplay.FindAction("ChangeGun", throwIfNotFound: true);
         // Always
         m_Always = asset.FindActionMap("Always", throwIfNotFound: true);
         m_Always_Pause = m_Always.FindAction("Pause", throwIfNotFound: true);
@@ -365,6 +440,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_ToggleCameraLock;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Shoot;
+    private readonly InputAction m_Gameplay_ChangeGun;
     public struct GameplayActions
     {
         private @GameInputs m_Wrapper;
@@ -374,6 +450,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
         public InputAction @ToggleCameraLock => m_Wrapper.m_Gameplay_ToggleCameraLock;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
+        public InputAction @ChangeGun => m_Wrapper.m_Gameplay_ChangeGun;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -398,6 +475,9 @@ public class @GameInputs : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShoot;
+                @ChangeGun.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeGun;
+                @ChangeGun.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeGun;
+                @ChangeGun.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnChangeGun;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -417,6 +497,9 @@ public class @GameInputs : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @ChangeGun.started += instance.OnChangeGun;
+                @ChangeGun.performed += instance.OnChangeGun;
+                @ChangeGun.canceled += instance.OnChangeGun;
             }
         }
     }
@@ -461,6 +544,7 @@ public class @GameInputs : IInputActionCollection, IDisposable
         void OnToggleCameraLock(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnChangeGun(InputAction.CallbackContext context);
     }
     public interface IAlwaysActions
     {

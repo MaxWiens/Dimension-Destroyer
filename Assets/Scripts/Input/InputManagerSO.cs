@@ -13,12 +13,18 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 	public bool InvertYCamera;
 	[SerializeField]
 	public Vector2 Sensitivity = new Vector2(0.5f,0.5f);
+	[SerializeField]
+	public float ScrollCooldown = 1 / 10;
 	public event UnityAction<Vector2> Moved;
 	public event UnityAction<bool> Jump;
 	public event UnityAction<Vector2> CameraRotated;
 	public event UnityAction<bool> Shoot;
 	public event UnityAction<bool> Pause;
+	public event UnityAction<bool> NextGun;
+	public event UnityAction<bool> PreviousGun;
 	private GameInputs _gameInputs;
+
+	private float nextScrollTime = -1;
 
 	private void OnEnable() {
 		if(_gameInputs == null) {
@@ -27,7 +33,9 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 			_gameInputs.Always.SetCallbacks(this);
 			_gameInputs.Enable();
 		}
-		Sensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivity"), PlayerPrefs.GetFloat("sensitivity"));
+
+		Sensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivity", 0.4f), PlayerPrefs.GetFloat("sensitivity", 0.4f));
+		nextScrollTime = -1;
 	}
 
 	public void ToggleUIInput(bool enabled) {
@@ -57,6 +65,20 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 	public void OnPause(InputAction.CallbackContext context)
 	{
 		Pause?.Invoke(context.phase == InputActionPhase.Performed);
+	}
+
+	public void OnChangeGun(InputAction.CallbackContext context)
+	{
+		if (Time.time > nextScrollTime)
+		{
+			nextScrollTime = Time.time + ScrollCooldown;
+			Vector2 v = context.ReadValue<Vector2>();
+			if (v.y > 0)
+				NextGun?.Invoke(true);
+			else if (v.y < 0)
+				PreviousGun?.Invoke(true);
+			Debug.Log(v);
+		}
 	}
 
 	public void OnRotateCamera(InputAction.CallbackContext context) {

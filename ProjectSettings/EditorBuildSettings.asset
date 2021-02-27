@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bogan.unity
     guid: e92d2d68d64ed3144a88d522a4633c49
+  - enabled: 1
+    path: Assets/Scenes/Nathan.unity
+    guid: 2b248dd4566f9e24fbc5f419b501efb7
   m_configObjects: {}
