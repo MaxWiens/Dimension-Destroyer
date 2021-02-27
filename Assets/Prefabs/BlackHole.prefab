@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 3862509017819229925}
   - component: {fileID: 3862509017819229924}
   - component: {fileID: 4058321552385006624}
-  - component: {fileID: 8841910261430330331}
+  - component: {fileID: 708131996}
+  - component: {fileID: 4176531117930195581}
   m_Layer: 9
   m_Name: BlackHole
   m_TagString: Untagged
@@ -95,7 +96,7 @@ SphereCollider:
   m_GameObject: {fileID: 3862509017819229934}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -194,7 +195,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &8841910261430330331
+--- !u!114 &708131996
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,8 +207,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGlobal: 1
+  isGlobal: 0
+  priority: 1
+  blendDistance: 1
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: eea4f38d012d5ae498e9602569166f35, type: 2}
+--- !u!114 &4176531117930195581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862509017819229934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 0
   priority: 0
-  blendDistance: 0
+  blendDistance: 1
   weight: 1
   sharedProfile: {fileID: 11400000, guid: eea4f38d012d5ae498e9602569166f35, type: 2}
