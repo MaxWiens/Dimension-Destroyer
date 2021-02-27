@@ -6,7 +6,12 @@ public class BlackHoleProjectile : MonoBehaviour
 {
     private readonly float timeToEnableCollider = 1 / 3f;
     private readonly float timeToExplode = 3f;
+
     private bool touched;
+
+    public float maxScale = 9f;
+    public float expansionTime = 3f;
+    public float contractionTime = 1 / 3f;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,9 +50,9 @@ public class BlackHoleProjectile : MonoBehaviour
 
     private IEnumerator DoEffect()
     {
-        IEnumerator scaleCoroutine = ChangeScale(3f);
+        IEnumerator scaleCoroutine = ChangeScale(maxScale / expansionTime);
         StartCoroutine(scaleCoroutine);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(expansionTime);
 
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         Collider[] colliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x * sphereCollider.radius);
@@ -57,8 +62,8 @@ public class BlackHoleProjectile : MonoBehaviour
             toDelete.Add(c.gameObject);
         }
         StopCoroutine(scaleCoroutine);
-        StartCoroutine(ChangeScale(-27f));
-        yield return new WaitForSeconds(1 / 3f);
+        StartCoroutine(ChangeScale(-maxScale / contractionTime));
+        yield return new WaitForSeconds(contractionTime);
 
         foreach (GameObject g in toDelete)
         {

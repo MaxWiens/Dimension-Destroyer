@@ -36,7 +36,6 @@ public class CameraControl : MonoBehaviour {
 			_rotationDelta.y = _maxAngle - _rotation.y;
 		}
 
-		_rotationDelta = Vector2.SmoothDamp(_rotationDelta, Vector2.zero, ref _velocity, _dapenTime);
 		_rotation += _rotationDelta;
 		_rotation.x %= 360f;
 		_rotation.y %= 360f;
@@ -45,7 +44,6 @@ public class CameraControl : MonoBehaviour {
 	}
 
 	private void OnCameraRotate(Vector2 direction){
-		if(direction.magnitude != 0)
-			_rotationDelta = direction*_inputManager.Sensitivity;
+		_rotationDelta = direction * _inputManager.Sensitivity;
 	}
 }
