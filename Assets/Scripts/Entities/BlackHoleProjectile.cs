@@ -69,7 +69,10 @@ public class BlackHoleProjectile : MonoBehaviour
 
         foreach (GameObject g in toDelete)
         {
-            Destroy(g);
+            if (!g.CompareTag("Void immune"))
+            {
+                Destroy(g);
+            }
         }
         Destroy(gameObject);
         if(toDelete.Count > 0)

@@ -37,7 +37,7 @@ public class BeamProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject != user)
+        if (other.gameObject != user && !other.gameObject.CompareTag("Void immune"))
         {
             Destroy(other.gameObject);
         }
