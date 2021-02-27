@@ -82,7 +82,15 @@ public class PlayerMove : MonoBehaviour {
 
 	private void FixedUpdate() {
 		Jump();
-		Move(_moveVec);
+
+		Vector3 camForward = Camera.main.transform.forward;
+		camForward.y = 0;
+		Vector3 camRight = new Vector3(-camForward.z, 0, camForward.x);
+
+		Vector3 moveVec = (camForward * _moveVec.y + camRight * -_moveVec.x).normalized;
+		Debug.DrawRay(transform.position, moveVec);
+
+		Move(new Vector2(moveVec.x, moveVec.z));
 	}
 
 	public void Jump(){

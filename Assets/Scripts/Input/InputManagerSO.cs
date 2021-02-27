@@ -16,6 +16,7 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 	public event UnityAction<Vector2> Moved;
 	public event UnityAction<bool> Jump;
 	public event UnityAction<Vector2> CameraRotated;
+	public event UnityAction<bool> Shoot;
 	private GameInputs _gameInputs;
 
 	private void OnEnable() {
@@ -31,11 +32,16 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions {
 	}
 
 	public void OnJump(InputAction.CallbackContext context) {
-		Jump?.Invoke(context.ReadValue<float>() == 1f);
+		Jump?.Invoke(context.phase == InputActionPhase.Performed);
 	}
 
 	public void OnMove(InputAction.CallbackContext context) {
 		Moved?.Invoke(context.ReadValue<Vector2>());
+	}
+
+	public void OnShoot(InputAction.CallbackContext context)
+	{
+		Shoot?.Invoke(context.phase == InputActionPhase.Performed);
 	}
 
 	public void OnRotateCamera(InputAction.CallbackContext context) {
