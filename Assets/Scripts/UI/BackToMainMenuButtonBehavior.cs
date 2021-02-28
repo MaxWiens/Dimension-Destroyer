@@ -7,6 +7,6 @@ public class BackToMainMenuButtonBehavior : MonoBehaviour
 {
     public void OnButtonPress()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 }

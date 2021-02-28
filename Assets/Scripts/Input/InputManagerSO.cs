@@ -34,7 +34,6 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 			_gameInputs.Enable();
 		}
 
-		Sensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivity", 0.4f), PlayerPrefs.GetFloat("sensitivity", 0.4f));
 		nextScrollTime = -1;
 	}
 
@@ -91,6 +90,7 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 
 	public void OnToggleCameraLock(InputAction.CallbackContext context)
 	{
+		return;
 		if(context.phase == InputActionPhase.Performed){
 			if(Cursor.lockState == CursorLockMode.Locked){
 				Cursor.lockState = CursorLockMode.None;

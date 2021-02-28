@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class MainMenuButtonBehavior : MonoBehaviour
+public class ChangePanelButton : MonoBehaviour
 {
     [SerializeField]
-    private GameObject MainMenuPanel;
+    private GameObject FromPanel;
     
     [SerializeField]
     private GameObject GoToPanel;
@@ -14,7 +14,7 @@ public class MainMenuButtonBehavior : MonoBehaviour
 
     public void OnButtonPress()
     {
-        MainMenuPanel.SetActive(false);
+        FromPanel.SetActive(false);
         GoToPanel.SetActive(true);
     }
 }

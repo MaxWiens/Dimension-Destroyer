@@ -5,21 +5,20 @@ using UnityEngine.UI;
 
 public class SensitivitySliderBehavior : MonoBehaviour
 {
-    [SerializeField]
+    [NotNull, SerializeField]
     private Slider sensitivitySlider;
 
-    [SerializeField]
+    [NotNull, SerializeField]
     private InputManagerSO inputManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        sensitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 0.4f);
+        sensitivitySlider.value = Settings.GetSensitivity();
     }
 
     public void SetSensitivity(float value)
     {
-        PlayerPrefs.SetFloat("sensitivity", value);
-        inputManager.Sensitivity = new Vector2(value, value);
+        Settings.SetSensitivity(value, inputManager);
     }
 }

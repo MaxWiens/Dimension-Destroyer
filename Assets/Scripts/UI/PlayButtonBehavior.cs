@@ -7,7 +7,7 @@ public class PlayButtonBehavior : MonoBehaviour
 {
     public void OnButtonPress()
     {
-        SceneManager.LoadScene("Nathan");
+        SceneManager.LoadSceneAsync("Nathan");
         Debug.Log("Loading Bogan Scene");
     }
 }

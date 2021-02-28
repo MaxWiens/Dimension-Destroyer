@@ -18,14 +18,14 @@ public class CameraControl : MonoBehaviour {
 	private Vector2 _velocity;
 
 	private void OnEnable() {
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = true;
+		//Cursor.lockState = CursorLockMode.Locked;
+		//Cursor.visible = true;
 		_inputManager.CameraRotated += OnCameraRotate;
 	}
 
 	private void OnDisable() {
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = false;
+		//Cursor.lockState = CursorLockMode.None;
+		//Cursor.visible = false;
 		_inputManager.CameraRotated -= OnCameraRotate;
 	}
 

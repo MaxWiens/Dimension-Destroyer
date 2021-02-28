@@ -21,6 +21,7 @@ public class GamestateManager : MonoBehaviour
 	private void OnEnable()
 	{
 		_inputs.Pause += TogglePause;
+		SetGameStateNormal();
 	}
 
 	private void OnDisable()
@@ -66,6 +67,8 @@ public class GamestateManager : MonoBehaviour
 	public void SetGameStateDead()
     {
 		state = Gamestate.Dead;
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 		_inputs.ToggleGameplayInput(false);
 		deathPanel.SetActive(true);
 		pausePanel.SetActive(false);

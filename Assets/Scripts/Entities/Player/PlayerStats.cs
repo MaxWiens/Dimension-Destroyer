@@ -43,7 +43,11 @@ public class PlayerStats : MonoBehaviour
 
     private void OnDestroy()
     {
-        gamestateManager.SetGameStateDead();
+        // A warning was already printed if this was null,
+        // so if it is null now and wasn't before then it is probably because we are changing scenes and
+        // the GamestateManager is already deleted.
+        if (gamestateManager != null)
+            gamestateManager.SetGameStateDead();
     }
 
     public void SetActiveGun(int index)
