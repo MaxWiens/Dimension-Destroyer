@@ -31,7 +31,7 @@ public class PlayerBlackHoleGun : AbstractPlayerGun
 		{
 			StartCoroutine(DoCooldown(2));
 			Vector3 vel = Camera.main.transform.forward * 5;
-			Rigidbody rigidbody = Instantiate(blackHolePrefab, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+			Rigidbody rigidbody = Instantiate(blackHolePrefab, transform.position + Camera.main.transform.forward, Quaternion.identity).GetComponent<Rigidbody>();
 			rigidbody.velocity = vel;
 		}
 	}

@@ -8,12 +8,14 @@ public class GamestateManager : MonoBehaviour
 	[SerializeField, NotNull] private GameObject pausePanel;
 	[SerializeField, NotNull] private GameObject hudPanel;
 	[SerializeField, NotNull] private GameObject deathPanel;
+	[SerializeField, NotNull] private GameObject victoryPanel;
 
 	private enum Gamestate
     {
 		Normal,
 		Paused,
-		Dead
+		Dead,
+		Victory
     }
 
 	private Gamestate state;
@@ -49,6 +51,7 @@ public class GamestateManager : MonoBehaviour
 		deathPanel.SetActive(false);
 		pausePanel.SetActive(false);
 		hudPanel.SetActive(true);
+		victoryPanel.SetActive(false);
 		Time.timeScale = 1;
 	}
 
@@ -61,6 +64,7 @@ public class GamestateManager : MonoBehaviour
 		deathPanel.SetActive(false);
 		pausePanel.SetActive(true);
 		hudPanel.SetActive(false);
+		victoryPanel.SetActive(false);
 		Time.timeScale = 0;
 	}
 
@@ -73,6 +77,20 @@ public class GamestateManager : MonoBehaviour
 		deathPanel.SetActive(true);
 		pausePanel.SetActive(false);
 		hudPanel.SetActive(false);
+		victoryPanel.SetActive(false);
+		Time.timeScale = 1;
+	}
+
+	public void SetGameStateVictory()
+	{
+		state = Gamestate.Victory;
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		_inputs.ToggleGameplayInput(false);
+		deathPanel.SetActive(false);
+		pausePanel.SetActive(false);
+		hudPanel.SetActive(false);
+		victoryPanel.SetActive(true);
 		Time.timeScale = 1;
 	}
 }

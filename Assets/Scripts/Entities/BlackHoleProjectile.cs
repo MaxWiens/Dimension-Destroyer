@@ -9,7 +9,7 @@ public class BlackHoleProjectile : MonoBehaviour
     private readonly float timeToEnableCollider = 1 / 3f;
     private readonly float timeToExplode = 3f;
 
-    private bool touched;
+    private bool exploding;
 
     public float maxScale = 9f;
     public float expansionTime = 3f;
@@ -17,17 +17,16 @@ public class BlackHoleProjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        touched = false;
+        exploding = false;
         StartCoroutine(EnableCollider());
         StartCoroutine(FallbackExplosionTimer());
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!touched)
+        if (!exploding)
         {
-            touched = true;
-            StartCoroutine(DoEffect());
+            StartCoroutine(Explode());
         }
     }
 
@@ -41,15 +40,15 @@ public class BlackHoleProjectile : MonoBehaviour
     private IEnumerator FallbackExplosionTimer()
     {
         yield return new WaitForSeconds(timeToExplode);
-        if (!touched)
+        if (!exploding)
         {
-            touched = true;
-            StartCoroutine(DoEffect());
+            StartCoroutine(Explode());
         }
     }
 
-    private IEnumerator DoEffect()
+    public IEnumerator Explode()
     {
+        exploding = true;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.velocity = Vector3.zero;
         IEnumerator scaleCoroutine = ChangeScale(maxScale / expansionTime);
@@ -69,7 +68,7 @@ public class BlackHoleProjectile : MonoBehaviour
         toDelete.Remove(this.gameObject);
         foreach (GameObject g in toDelete)
         {
-            if (!g.CompareTag("Void immune"))
+            if (g != null && !g.CompareTag("Void immune"))
             {
                 if (g.CompareTag("Player"))
                 {
