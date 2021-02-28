@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour {
 	[Header("Seeking")]
 	[SerializeField] private float _detectionRange = 30f;
 	[SerializeField] private float _agroTime = 5f;
+	[SerializeField] private float _jumpConsiderationDistance = 100f;
 
 	[Header("WithinRange")]
 	[SerializeField] private float _minAttackRange = 10f;
@@ -55,8 +56,13 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (_playerTransform == null)
+		if(_agent.enabled && !_agent.isOnOffMeshLink && !NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas)){
+			// no longer on navmesh
+			_agent.enabled = false;
 			return;
+		}
+
+		if(!_agent.enabled || _playerTransform == null) return;
 
 		Vector3 dif = _playerTransform.position - transform.position;
 		switch(State){
@@ -93,17 +99,14 @@ public class Enemy : MonoBehaviour {
 							_recalculateCooldown = .2f;
 						}
 						// Strafe
-						else
-                        {
+						else{
 							Quaternion rotation = Quaternion.identity;
 							rotation.eulerAngles = new Vector3(0, (Random.Range(0, 2) == 0 ? 1 : -1) * 30, 0);
 							Vector3 targetPos = _playerTransform.position - (rotation * dif);
 							_agent.SetDestination(targetPos);
 							_recalculateCooldown = .5f;
 						}
-                    }
-					else
-                    {
+					}else{
 						_recalculateCooldown -= Time.deltaTime;
 					}
 
@@ -165,21 +168,52 @@ public class Enemy : MonoBehaviour {
 		if(!_agent.SetDestination(_playerTransform.position)){
 			Debug.LogWarning("Enemy failed to find path to player :(");
 		}
-		if(_agent.remainingDistance <= 0.001f && _playerTransform.position.y < _agent.pathEndPosition.y){
-			//jump down
-			Vector3 dif = _playerTransform.position - _agent.pathEndPosition;
-			// get vector slightly out from platform
-			dif.y = 0;
-			Vector3 top = transform.position+dif.normalized*_agent.radius*5f;
-			if(Physics.Raycast(top, Vector3.down, out RaycastHit hit, MAX_DROP_HEIGHT, ~LayerMask.GetMask("Enviornment"), QueryTriggerInteraction.Ignore) && NavMesh.SamplePosition(hit.point ,out NavMeshHit navMeshHit, 5f, NavMesh.AllAreas)){
-				if(_link == null) _link = Instantiate(_navMeshLinkPrefab).GetComponent<NavMeshLink>();
-				else _link.enabled = true;
-				_link.startPoint = _agent.pathEndPosition;
-				_link.endPoint = navMeshHit.position;
-				_linkLifeTimer = 5f;
-			}
-		}
+		if(_agent.remainingDistance <= 0.001f){
+			Vector3 dif = _playerTransform.position-_agent.pathEndPosition;
+			float difDistance = dif.magnitude;
 
+			if(difDistance < _jumpConsiderationDistance){
+				// jump
+				if(Physics.Raycast(dif/2+_agent.pathEndPosition, Vector3.down, out RaycastHit rayhit, MAX_DROP_HEIGHT, ~LayerMask.GetMask("Envionrment"), QueryTriggerInteraction.Ignore)){
+					NavMeshPath path = new NavMeshPath();
+					if(NavMesh.CalculatePath(rayhit.transform.position, _agent.pathEndPosition, NavMesh.AllAreas, path)){
+						LinkJump(path.corners[path.corners.Length-1]);
+					}
+				}else if(NavMesh.SamplePosition(dif/2+_agent.pathEndPosition, out NavMeshHit nmhit, 5f, NavMesh.AllAreas)){
+					NavMeshPath path = new NavMeshPath();
+					if(NavMesh.CalculatePath(nmhit.position, _agent.pathEndPosition, NavMesh.AllAreas, path)){
+						LinkJump(path.corners[path.corners.Length-1]);
+					}
+				}
+			}else{
+				// stranded so wander
+				State = EnemyState.Wandering;
+				return;
+			}
+
+			// if(_playerTransform.position.y < _agent.pathEndPosition.y){
+
+			// }
+			// if(_playerTransform.position.y < _agent.pathEndPosition.y){
+			// 	//jump down
+			// 	dif = _playerTransform.position - _agent.pathEndPosition;
+			// 	// get vector slightly out from platform
+			// 	dif.y = 0;
+			// 	Vector3 top = transform.position+dif.normalized*_agent.radius*5f;
+			// 	if(Physics.Raycast(top, Vector3.down, out RaycastHit hit, MAX_DROP_HEIGHT, ~LayerMask.GetMask("Enviornment"), QueryTriggerInteraction.Ignore) && NavMesh.SamplePosition(hit.point ,out NavMeshHit navMeshHit, 5f, NavMesh.AllAreas)){
+			// 		LinkJump(navMeshHit.position);
+			// 	}
+			// }
+		}
+	}
+
+	private void LinkJump(Vector3 endPoint){
+		if(_link == null) _link = Instantiate(_navMeshLinkPrefab).GetComponent<NavMeshLink>();
+		else _link.enabled = true;
+		NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas);
+		_link.startPoint = hit.position;
+		_link.endPoint = endPoint;
+		_linkLifeTimer = 5f;
 	}
 
 	private void Wander(float deltaTime){
@@ -196,6 +230,6 @@ public class Enemy : MonoBehaviour {
 	private void Attack()
     {
 		_attackTimer += Random.Range(3f, 5f);
-		_attack.Attack(_targettedPosition);
+		//_attack.Attack(_targettedPosition);
 	}
 }

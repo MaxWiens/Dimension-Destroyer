@@ -30,7 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9220001809969219693}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.018333199, y: 0.972065, z: -0.081207186, w: 0.21945179}
   m_LocalPosition: {x: 3.72, y: 5.85, z: 36.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -161,6 +161,7 @@ MonoBehaviour:
   _agroTime: 5
   _minAttackRange: 1
   _maxAttackRange: 15
+  _recalculateCooldown: 0
   _chargeTimeRemaining: 0
   _targettedPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &9220001809969219692

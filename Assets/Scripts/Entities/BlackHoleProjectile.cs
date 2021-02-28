@@ -66,7 +66,7 @@ public class BlackHoleProjectile : MonoBehaviour
         StopCoroutine(scaleCoroutine);
         StartCoroutine(ChangeScale(-maxScale / contractionTime));
         yield return new WaitForSeconds(contractionTime);
-
+        toDelete.Remove(this.gameObject);
         foreach (GameObject g in toDelete)
         {
             if (!g.CompareTag("Void immune"))

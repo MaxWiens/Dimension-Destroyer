@@ -8,6 +8,7 @@ public class BeamProjectile : MonoBehaviour
 
     [SerializeField, NotNull] private EnviornmentManagerSO _enviornmentManager = default;
 
+    private HashSet<GameObject> _toDelete = new HashSet<GameObject>();
     private void Start()
     {
         StartCoroutine(ResizeAndDestroy());
@@ -23,6 +24,11 @@ public class BeamProjectile : MonoBehaviour
         scaleCoroutine = ChangeScaleXZ(-2f);
         StartCoroutine(scaleCoroutine);
         yield return new WaitForSeconds(0.5f);
+        foreach(GameObject o in _toDelete){
+            Destroy(o);
+        }
+        if(_toDelete.Count > 0)
+            _enviornmentManager.RebuildNavMesh();
         Destroy(gameObject);
     }
 
@@ -39,7 +45,7 @@ public class BeamProjectile : MonoBehaviour
     {
         if (other.gameObject != user && !other.gameObject.CompareTag("Void immune"))
         {
-            Destroy(other.gameObject);
+            _toDelete.Add(other.gameObject);
         }
     }
 
