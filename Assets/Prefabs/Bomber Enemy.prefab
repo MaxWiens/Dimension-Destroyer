@@ -247,10 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 5321316372835782925}
-  _forwardWalk: {fileID: 7400000, guid: 8cb02374b9013124aa18f23fb3e3994c, type: 2}
-  _backWalk: {fileID: 7400000, guid: 5da4ca4a4c64f214a98648399e47232e, type: 2}
-  _forwardIdle: {fileID: 7400000, guid: 9b726f4b8d33d9e49bd0e027032ee5b0, type: 2}
-  _backwardIdle: {fileID: 7400000, guid: c6eb66a7b172f3341ad40d15d38b366b, type: 2}
+  _spriteRender: {fileID: 4243051617000773882}
   _agent: {fileID: 1291706718069407363}
 --- !u!114 &6737652834692137354
 MonoBehaviour:

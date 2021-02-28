@@ -118,10 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 5927413899218395862}
-  _forwardWalk: {fileID: 7400000, guid: 4d2d1752980c07641a6097bae62eed64, type: 2}
-  _backWalk: {fileID: 7400000, guid: 973239d50da15b04794454a6d6793ed2, type: 2}
-  _forwardIdle: {fileID: 7400000, guid: 3b383e5a00e04904caf3ec178fb2f39a, type: 2}
-  _backwardIdle: {fileID: 7400000, guid: 46d0d75ffc7741f4c9e9cd56f28a532e, type: 2}
+  _spriteRender: {fileID: 4027153819703735843}
   _agent: {fileID: 9220001809969219690}
 --- !u!114 &4303377339667225040
 MonoBehaviour:
@@ -149,6 +146,7 @@ GameObject:
   - component: {fileID: 9220001809969219690}
   - component: {fileID: 9220001809969219691}
   - component: {fileID: 9220001809969219692}
+  - component: {fileID: 9220001810356013657}
   m_Layer: 0
   m_Name: Beam Enemy
   m_TagString: Enemy
