@@ -13,6 +13,7 @@ public class VolumeSliderBehavior : MonoBehaviour
     {
         volumeSlider.value = PlayerPrefs.GetFloat("volume", 0.75f);
     }
+    
     public void SetVolume(float volume)
     {
         PlayerPrefs.SetFloat("volume", volume);

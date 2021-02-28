@@ -14,7 +14,7 @@ public class SensitivitySliderBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sensitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 0.5f);
+        sensitivitySlider.value = PlayerPrefs.GetFloat("sensitivity", 0.4f);
     }
 
     public void SetSensitivity(float value)

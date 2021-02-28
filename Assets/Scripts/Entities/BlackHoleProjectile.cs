@@ -28,8 +28,6 @@ public class BlackHoleProjectile : MonoBehaviour
         {
             touched = true;
             StartCoroutine(DoEffect());
-            Rigidbody rigidbody = GetComponent<Rigidbody>();
-            rigidbody.velocity = Vector3.zero;
         }
     }
 
@@ -52,6 +50,8 @@ public class BlackHoleProjectile : MonoBehaviour
 
     private IEnumerator DoEffect()
     {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.velocity = Vector3.zero;
         IEnumerator scaleCoroutine = ChangeScale(maxScale / expansionTime);
         StartCoroutine(scaleCoroutine);
         yield return new WaitForSeconds(expansionTime);

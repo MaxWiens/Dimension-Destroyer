@@ -14,7 +14,6 @@ public class PlayerBeamGun : AbstractGun
     private void Start()
     {
 		onCooldown = false;
-
 	}
 
     private void OnEnable()
@@ -30,7 +29,7 @@ public class PlayerBeamGun : AbstractGun
 
 	private void ShootBeamGun(bool pressed)
 	{
-		if (pressed && !onCooldown && beamInstance == null && playerStats.lenses > 0 || true)
+		if (pressed && !onCooldown && beamInstance == null && (playerStats.lenses > 0 || true))
 		{
 			playerStats.lenses--;
 			StartCoroutine(DoCooldown());

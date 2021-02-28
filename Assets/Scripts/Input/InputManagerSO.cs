@@ -77,7 +77,6 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 				NextGun?.Invoke(true);
 			else if (v.y < 0)
 				PreviousGun?.Invoke(true);
-			Debug.Log(v);
 		}
 	}
 

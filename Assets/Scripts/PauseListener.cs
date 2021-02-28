@@ -18,7 +18,7 @@ public class PauseListener : MonoBehaviour
 		_inputs.Pause -= TogglePause;
 	}
 
-	private void TogglePause(bool pressed)
+	public void TogglePause(bool pressed)
     {
 		if (pressed)
         {

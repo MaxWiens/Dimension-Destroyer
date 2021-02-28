@@ -46,7 +46,6 @@ public class PlayerStats : MonoBehaviour
         if (next >= weapons.Count)
             next = 0;
         SetActiveGun(next);
-        Debug.Log($"Next: {next}");
     }
 
     private void PreviousGun(bool pressed)
@@ -58,6 +57,5 @@ public class PlayerStats : MonoBehaviour
         if (next < 0)
             next = weapons.Count - 1;
         SetActiveGun(next);
-        Debug.Log($"Next: {next}");
     }
 }
