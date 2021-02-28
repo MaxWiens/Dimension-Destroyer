@@ -13,6 +13,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.25, z: 1}
   m_Center: {x: -0.25, y: 0.625, z: 0.5}
+--- !u!208 &8788510954476104592
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258813306458955696}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.25, y: 0.625, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.25, y: 0.625, z: 0.5}
+  m_TimeToStationary: 0.5
 --- !u!1 &5332875290637319080
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,6 +126,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Desktop_Tower_Color
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5a0b52b15f6fd904eb59faa3c14b1511,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a0b52b15f6fd904eb59faa3c14b1511, type: 3}
