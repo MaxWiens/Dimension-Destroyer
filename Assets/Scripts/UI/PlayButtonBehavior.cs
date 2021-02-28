@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayButtonBehavior : MonoBehaviour
 {
+    public GameObject levelSelect;
+    public GameObject mainmenu;
     [NotNull, SerializeField] private Button button;
     private void OnEnable()
     {
@@ -14,7 +16,9 @@ public class PlayButtonBehavior : MonoBehaviour
 
     public void OnButtonPress()
     {
-        SceneManager.LoadSceneAsync("RealLevel1");
-        Debug.Log("Loading Bogan Scene");
+        mainmenu.SetActive(false);
+        levelSelect.SetActive(true);
+        //SceneManager.LoadSceneAsync("RealLevel1");
+        //Debug.Log("Loading Bogan Scene");
     }
 }
