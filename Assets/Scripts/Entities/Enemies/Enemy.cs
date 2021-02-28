@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour {
 	[Header("WithinRange")]
 	[SerializeField] private float _minAttackRange = 10f;
 	[SerializeField] private float _maxAttackRange = 15f;
+	[SerializeField] private float _recalculateCooldown = 0f;
 
 	[Header("WeaponCharging")]
 	[SerializeField] private float _chargeTimeRemaining = 0f;
@@ -82,6 +83,30 @@ public class Enemy : MonoBehaviour {
 				if(dif.sqrMagnitude > _maxAttackRange*_maxAttackRange){
 					State = EnemyState.Seeking;
 				}else{
+					if (_recalculateCooldown <= 0)
+					{
+						// If in the min range
+						if (dif.sqrMagnitude < _minAttackRange * _minAttackRange)
+						{
+							Vector3 goTo = -dif.normalized * ((_minAttackRange + _maxAttackRange) / 2f);
+							_agent.SetDestination(transform.position + goTo);
+							_recalculateCooldown = .2f;
+						}
+						// Strafe
+						else
+                        {
+							Quaternion rotation = Quaternion.identity;
+							rotation.eulerAngles = new Vector3(0, (Random.Range(0, 2) == 0 ? 1 : -1) * 30, 0);
+							Vector3 targetPos = _playerTransform.position - (rotation * dif);
+							_agent.SetDestination(targetPos);
+							_recalculateCooldown = .5f;
+						}
+                    }
+					else
+                    {
+						_recalculateCooldown -= Time.deltaTime;
+					}
+
 					if(_attackTimer <= 0f){
 						if (_attack is ChargedEnemyAttack ca)
                         {
@@ -171,18 +196,6 @@ public class Enemy : MonoBehaviour {
 	private void Attack()
     {
 		_attackTimer += Random.Range(3f, 5f);
-		_attack.Attack(_targettedPosition);
+		//_attack.Attack(_targettedPosition);
 	}
-
-	/*private Vector3 GetPointAroundTarget()
-    {
-		int tries = 0;
-		Vector3 ret = Vector3.zero;
-		do
-        {
-			Vector2 circle = Random.insideUnitCircle;
-			tries++;
-        } while ( tries <)
-		return Vector3.zero;
-    }*/
 }
