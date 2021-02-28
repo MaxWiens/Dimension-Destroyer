@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField, NotNull] private InputManagerSO _inputs;
+
     public int energyCells;
     public int lenses;
     public List<AbstractPlayerGun> weapons;
@@ -11,11 +14,19 @@ public class PlayerStats : MonoBehaviour
 
     public AbstractPlayerGun CurrentWeapon => weapons[currentWeaponIndex];
 
-    [SerializeField, NotNull] private InputManagerSO _inputs;
+    private GamestateManager gamestateManager;
 
     private void Start()
     {
         SetActiveGun(0);
+
+        gamestateManager = GameObject.FindGameObjectWithTag("GamestateManager").GetComponent<GamestateManager>();
+
+        if (gamestateManager == null)
+        {
+            Debug.LogError($"No GamestateManager found, death screen will not appear at {SceneManager.GetActiveScene().path}");
+            Destroy(gameObject);
+        }
     }
 
     private void OnEnable()
@@ -28,6 +39,11 @@ public class PlayerStats : MonoBehaviour
     {
         _inputs.NextGun -= NextGun;
         _inputs.PreviousGun -= PreviousGun;
+    }
+
+    private void OnDestroy()
+    {
+        gamestateManager.SetGameStateDead();
     }
 
     public void SetActiveGun(int index)

@@ -38,14 +38,14 @@ public class InputManagerSO : ScriptableObject, GameInputs.IGameplayActions, Gam
 		nextScrollTime = -1;
 	}
 
-	public void ToggleUIInput(bool enabled) {
+	public void ToggleGameplayInput(bool enabled) {
 		if (enabled)
         {
-			_gameInputs.Gameplay.Disable();
+			_gameInputs.Gameplay.Enable();
         }
 		else
         {
-			_gameInputs.Gameplay.Enable();
+			_gameInputs.Gameplay.Disable();
         }
 	}
 

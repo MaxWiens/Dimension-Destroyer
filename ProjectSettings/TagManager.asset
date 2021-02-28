@@ -8,6 +8,7 @@ TagManager:
   - Pause listener
   - Destructible Holder
   - Enemy
+  - GamestateManager
   layers:
   - Default
   - TransparentFX

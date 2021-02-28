@@ -7,6 +7,7 @@ public enum EnemyState {
 	Seeking,
 	Chasing,
 	WithinRange,
+	WeaponCharging,
 }
 
 public class Enemy : MonoBehaviour {
@@ -15,7 +16,7 @@ public class Enemy : MonoBehaviour {
 
 	[SerializeField, NotNull] private NavMeshAgent _agent = default;
 	[SerializeField, NotNull] private EnemyAttack _attack = default;
-	[SerializeField, NotNull] public GameObject _navMeshLinkPrefab = default;
+	[NotNull] public GameObject _navMeshLinkPrefab = default;
 	[SerializeField] private float _speed = 5f;
 
 	[Header("Wandering")]
@@ -30,6 +31,11 @@ public class Enemy : MonoBehaviour {
 	[Header("WithinRange")]
 	[SerializeField] private float _minAttackRange = 10f;
 	[SerializeField] private float _maxAttackRange = 15f;
+
+	[Header("WeaponCharging")]
+	[SerializeField] private float _chargeTimeRemaining = 0f;
+	[SerializeField] private Vector3 _targettedPosition = Vector3.zero;
+
 	public const float MAX_DROP_HEIGHT = float.PositiveInfinity;
 
 	private float _agroTimer = 0f;
@@ -77,10 +83,39 @@ public class Enemy : MonoBehaviour {
 					State = EnemyState.Seeking;
 				}else{
 					if(_attackTimer <= 0f){
-						_attackTimer += Random.Range(3f,5f);
-						_attack.Attack(_playerTransform.position);
+						if (_attack is ChargedEnemyAttack ca)
+                        {
+							State = EnemyState.WeaponCharging;
+							_chargeTimeRemaining = ca.ChargeTime;
+							_targettedPosition = _playerTransform.position;
+							ca.Charge(_playerTransform.position);
+							_agent.enabled = false;
+						}
+						else
+						{
+							_targettedPosition = _playerTransform.position;
+							Attack();
+                        }
 					}
 					_attackTimer -= Time.fixedDeltaTime;
+				}
+				break;
+			case EnemyState.WeaponCharging:
+				_chargeTimeRemaining -= Time.deltaTime;
+				if (_chargeTimeRemaining <= 0)
+                {
+					if (_attack is ChargedEnemyAttack ca)
+					{
+						ca.EndCharge();
+					}
+					else
+                    {
+						Debug.LogError($"{gameObject} had WeaponCharging state, but attack is not a ChargedEnemyAttack");
+                    }
+
+					_agent.enabled = true;
+					Attack();
+					State = EnemyState.WithinRange;
 				}
 				break;
 		}
@@ -132,4 +167,22 @@ public class Enemy : MonoBehaviour {
 		}
 		_agent.Move(_wanderMoveVec*deltaTime);
 	}
+
+	private void Attack()
+    {
+		_attackTimer += Random.Range(3f, 5f);
+		_attack.Attack(_targettedPosition);
+	}
+
+	/*private Vector3 GetPointAroundTarget()
+    {
+		int tries = 0;
+		Vector3 ret = Vector3.zero;
+		do
+        {
+			Vector2 circle = Random.insideUnitCircle;
+			tries++;
+        } while ( tries <)
+		return Vector3.zero;
+    }*/
 }
