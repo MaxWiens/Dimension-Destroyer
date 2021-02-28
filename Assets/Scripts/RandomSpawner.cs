@@ -6,19 +6,41 @@ public class RandomSpawner : MonoBehaviour
 {
     public int totalCountToSpawn;
     public List<GameObject> toSpawn;
+    public DestructionTracker tracker;
+    public float minSpawnTime = 1f;
+    public float maxSpawnTime = 10f;
+
+    private float _spawnTimer = 0f;
+    private float _spawnTime = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (transform.childCount < totalCountToSpawn)
+        Spawn(totalCountToSpawn);
+        _spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+        //Destroy(gameObject);
+    }
+
+    private void Update() {
+        _spawnTimer += Time.deltaTime;
+        if(_spawnTimer >= _spawnTime){
+            _spawnTimer -= _spawnTime;
+            int numToSpawn = Mathf.Clamp((int)(tracker.PercentDestroyed * transform.childCount), 2, transform.childCount);
+            Spawn(numToSpawn);
+            _spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+        }
+    }
+
+    public void Spawn(int amnt){
+        if (transform.childCount < amnt)
         {
-            Debug.LogError($"RandomSpawner does not have enough child nodes to spawn all requested objects. {totalCountToSpawn} requested, {transform.childCount} children");
+            Debug.LogError($"RandomSpawner does not have enough child nodes to spawn all requested objects. {amnt} requested, {transform.childCount} children");
             Destroy(gameObject);
             return;
         }
 
         HashSet<Transform> used = new HashSet<Transform>();
-        while (totalCountToSpawn > 0)
+        while (amnt > 0)
         {
             Transform childTransform;
             do
@@ -31,9 +53,7 @@ public class RandomSpawner : MonoBehaviour
             GameObject chosenSpawn = toSpawn[Random.Range(0, toSpawn.Count)];
 
             Instantiate(chosenSpawn, childTransform.position, childTransform.rotation);
-            totalCountToSpawn--;
+            amnt--;
         }
-
-        Destroy(gameObject);
     }
 }
