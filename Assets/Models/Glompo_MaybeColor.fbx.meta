@@ -12,6 +12,15 @@ ModelImporter:
   - first:
       74: 90103168160849459
     second: Root|Root|Root|Root|Root|Walk_loop|Root|Walk_loop|Root|Root|Root|Wal
+  - first:
+      74: -9119568262495198578
+    second: Root|Root|Root|Root|Root|Root|Root|Idle|Root|Idle|Root|Root|Root|_a4
+  - first:
+      74: 2637076223677220704
+    second: Root|Root|Root|Root|Root|Root|Root|Run_loop|Root|Run_loop|Root|Ro_9f
+  - first:
+      74: 6237931845610731699
+    second: Root|Root|Root|Root|Root|Root|Root|Walk_loop|Root|Walk_loop|Root|_34
   externalObjects: {}
   materials:
     materialImportMode: 2

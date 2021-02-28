@@ -139,8 +139,8 @@ public class PlayerMove : MonoBehaviour {
 
 		Move(new Vector2(moveVec.x, moveVec.z));
 
-		Debug.Log($"isJumping: {_isJumping}");
-		Debug.Log($"isGrounded:{IsGrounded}");
+		// Debug.Log($"isJumping: {_isJumping}");
+		// Debug.Log($"isGrounded:{IsGrounded}");
 	}
 
 	public void Jump(){
