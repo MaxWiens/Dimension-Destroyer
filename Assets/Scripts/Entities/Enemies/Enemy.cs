@@ -56,10 +56,22 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if(_agent.enabled && !_agent.isOnOffMeshLink && !NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas)){
-			// no longer on navmesh
-			_agent.enabled = false;
-			return;
+		if(!_agent.isOnOffMeshLink)
+		{
+			if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+            {
+				if (!_agent.enabled)
+				{
+					_agent.enabled = true;
+					_agent.Warp(transform.position);
+				}
+            }
+			else
+			{
+				// no longer on navmesh
+				_agent.enabled = false;
+				return;
+			}
 		}
 
 		if(!_agent.enabled || _playerTransform == null) return;

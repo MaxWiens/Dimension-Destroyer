@@ -10,7 +10,7 @@ public class Pickup : MonoBehaviour
         Lens,
     }
 
-    public PickupType pickupType;
+    private PickupType pickupType;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -26,6 +26,7 @@ public class Pickup : MonoBehaviour
                     stats.lenses += 3;
                     break;
             }
+            stats.OnPickup();
             Destroy(gameObject);
         }
     }

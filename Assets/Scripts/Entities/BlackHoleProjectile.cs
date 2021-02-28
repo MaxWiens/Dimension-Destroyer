@@ -5,6 +5,10 @@ using UnityEngine;
 public class BlackHoleProjectile : MonoBehaviour
 {
     [SerializeField, NotNull] private EnviornmentManagerSO _enviornmentManager = default;
+    [SerializeField, NotNull] private AudioSource audioSource;
+    [SerializeField, NotNull] private AudioClip shortOpenSound;
+    [SerializeField, NotNull] private AudioClip longOpenSound;
+    [SerializeField, NotNull] private AudioClip closeSound;
 
     private readonly float timeToEnableCollider = 1 / 3f;
     private readonly float timeToExplode = 3f;
@@ -53,6 +57,14 @@ public class BlackHoleProjectile : MonoBehaviour
         rigidbody.velocity = Vector3.zero;
         IEnumerator scaleCoroutine = ChangeScale(maxScale / expansionTime);
         StartCoroutine(scaleCoroutine);
+        if (expansionTime < 1)
+        {
+            audioSource.PlayOneShot(shortOpenSound);
+        }
+        else
+        {
+            audioSource.PlayOneShot(longOpenSound);
+        }
         yield return new WaitForSeconds(expansionTime);
 
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
@@ -64,6 +76,7 @@ public class BlackHoleProjectile : MonoBehaviour
         }
         StopCoroutine(scaleCoroutine);
         StartCoroutine(ChangeScale(-maxScale / contractionTime));
+        audioSource.PlayOneShot(closeSound);
         yield return new WaitForSeconds(contractionTime);
         toDelete.Remove(this.gameObject);
         foreach (GameObject g in toDelete)

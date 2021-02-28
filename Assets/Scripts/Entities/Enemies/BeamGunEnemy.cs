@@ -7,8 +7,9 @@ namespace Assets.Scripts.Entities.Enemies
     {
         [SerializeField, NotNull] private GameObject beamPrefab;
         [SerializeField, NotNull] private GameObject chargeEffectPrefab;
+        [SerializeField] private AudioSource chargeSound;
 
-        public override float ChargeTime => 1f;
+        public override float ChargeTime => 1.85f;
 
         private GameObject chargeEffectInstance;
 
@@ -24,6 +25,7 @@ namespace Assets.Scripts.Entities.Enemies
         {
             transform.LookAt(target);
             chargeEffectInstance = Instantiate(chargeEffectPrefab, transform);
+            chargeSound.Play();
         }
 
         public override void EndCharge()

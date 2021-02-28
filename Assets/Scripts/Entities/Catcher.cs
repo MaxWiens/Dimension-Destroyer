@@ -10,30 +10,6 @@ public class Catcher : MonoBehaviour
     [NotNull, SerializeField] private Transform indestructible;
     [NotNull, SerializeField] private NavMeshSurface n;
 
-    private int mask;
-
-    private void Start()
-    {
-        GameObject obj = GameObject.FindGameObjectWithTag("Enemy");
-        bool success = false;
-        if (obj != null)
-        {
-            NavMeshAgent agent = obj.GetComponent<NavMeshAgent>();
-            if (agent != null)
-            {
-                success = true;
-                mask = agent.areaMask;
-            }
-        }
-
-        if (!success)
-        {
-            Debug.LogWarning($"Catcher could not find an enemy with a NavMeshAgent in scene {SceneManager.GetActiveScene().path}. Placing things may not work.");
-            mask = int.MaxValue;
-
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         for (int i = 0; i < 50; i++)
@@ -50,7 +26,7 @@ public class Catcher : MonoBehaviour
                 current = current.GetChild(rIndex);
             }
 
-            if (NavMesh.SamplePosition(current.transform.position, out NavMeshHit hit, 4, mask))
+            if (NavMesh.SamplePosition(current.transform.position, out NavMeshHit hit, 4, NavMesh.AllAreas))
             {
                 Vector3 finalPosition;
                 if (Physics.Raycast(hit.position + new Vector3(0, 10, 0), Vector3.down, out RaycastHit rayhit, 20))

@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField, NotNull] private InputManagerSO _inputs;
+    [SerializeField, NotNull] private AudioSource audioSource;
+    [SerializeField, NotNull] private AudioClip pickupSound;
+    [SerializeField, NotNull] private AudioClip loseShieldSound;
 
     public int energyCells;
     public int lenses;
@@ -54,7 +57,10 @@ public class PlayerStats : MonoBehaviour
     public void TakeDamage()
     {
         if (shielded)
+        {
             shielded = false;
+            audioSource.PlayOneShot(loseShieldSound);
+        }
         else
             Destroy(gameObject);
     }
@@ -88,5 +94,10 @@ public class PlayerStats : MonoBehaviour
         if (next < 0)
             next = weapons.Count - 1;
         SetActiveGun(next);
+    }
+
+    public void OnPickup()
+    {
+        audioSource.PlayOneShot(pickupSound, .5f);
     }
 }

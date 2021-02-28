@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerTheGunThatCanKillReality : AbstractPlayerGun
 {
-    public override string Name => "The Eraser";
+	[SerializeField, NotNull] private AudioSource audioSource;
+	[SerializeField, NotNull] private AudioClip afterSnapSound;
+
+	public override string Name => "The Eraser";
 
     public override float Shots => playerStats.energyCells / 5f;
 
@@ -31,6 +34,8 @@ public class PlayerTheGunThatCanKillReality : AbstractPlayerGun
 	{
 		if (pressed && Cooldown <= 0 && Shots >= 1)
 		{
+			audioSource.PlayOneShot(afterSnapSound);
+			playerStats.energyCells = 0;
 			GameObject destructibleHolder = GameObject.FindGameObjectWithTag("Destructible Holder");
 			int childCount = destructibleHolder.transform.childCount;
 			for (int i = 0; i < childCount; i++)
