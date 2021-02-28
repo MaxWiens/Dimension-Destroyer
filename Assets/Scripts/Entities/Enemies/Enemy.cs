@@ -117,7 +117,7 @@ public class Enemy : MonoBehaviour {
 							_chargeTimeRemaining = ca.ChargeTime;
 							_targettedPosition = _playerTransform.position;
 							ca.Charge(_playerTransform.position);
-							_agent.enabled = false;
+							_agent.ResetPath();
 						}
 						else
 						{
@@ -141,7 +141,6 @@ public class Enemy : MonoBehaviour {
 						Debug.LogError($"{gameObject} had WeaponCharging state, but attack is not a ChargedEnemyAttack");
                     }
 
-					_agent.enabled = true;
 					Attack();
 					State = EnemyState.WithinRange;
 				}
