@@ -66,8 +66,6 @@ public class PlayerMove : MonoBehaviour {
 				// }
 			}
 
-
-
 			if(doMove){
 				Vector3 adjustedMoveVec = Vector3.zero;
 				if(_groundNormal.x == 0 && _groundNormal.z == 0f){
@@ -80,8 +78,41 @@ public class PlayerMove : MonoBehaviour {
 					adjustedMoveVec = q * normalCrossUp;
 				}
 
-				if(_wallNormal.x != 0f || _wallNormal.y != 0f ||_wallNormal.z != 0f)
-					adjustedMoveVec = _wallNormal+adjustedMoveVec;
+				if(_wallNormal.x != 0f || _wallNormal.y != 0f ||_wallNormal.z != 0f){
+					//if(_groundNormal )
+
+
+					Vector2 normxz = new Vector2(_wallNormal.x,_wallNormal.z);
+
+
+
+					Vector2 adjustedMoveVecXZ = new Vector2(adjustedMoveVec.x, adjustedMoveVec.z);
+
+
+
+
+					Vector3 normalCrossUp = Vector3.Cross(Vector3.down,_wallNormal).normalized;
+
+
+
+					//Vector2 normcrossxz = Vector2(normalCrossUp.x,normalCrossUp.z);
+					Vector2 final = ((adjustedMoveVecXZ - 2*Vector2.Dot(adjustedMoveVecXZ,normxz)*normxz)+adjustedMoveVecXZ)/2;
+
+					if((normxz + adjustedMoveVecXZ).magnitude < adjustedMoveVec.magnitude){
+						adjustedMoveVec = new Vector3(final.x, adjustedMoveVec.y, final.y);
+					}else{
+
+					}
+
+
+					// Vector3 slopeDirection = Vector3.Cross(_wallNormal,normalCrossUp).normalized;
+					// float theata = Vector2.SignedAngle(direction, new Vector2(slopeDirection.x,slopeDirection.z))+90;
+					// Quaternion q = Quaternion.AngleAxis(theata, _wallNormal);
+					// adjustedMoveVec = q * normalCrossUp;
+					// adjustedMoveVec = adjustedMoveVec.normalized + _wallNormal.normalized;
+				}
+
+
 				if((IsGrounded && _isJumping) || !IsGrounded){
 					_rigidBody.velocity = new Vector3(adjustedMoveVec.x*MoveForce, _rigidBody.velocity.y, adjustedMoveVec.z*MoveForce);
 				}else if(IsGrounded){
@@ -171,10 +202,11 @@ public class PlayerMove : MonoBehaviour {
 				break;
 			}else if(f <= 180 - MaxSlope){
 				//Debug.Log($"wall normal? {f}");
-				if(other.gameObject.layer == LayerMask.NameToLayer("Enviornment")){
+				if(other.gameObject.layer == LayerMask.NameToLayer("Envionrment")){
 					_wallNormal= contactPoint.normal;
 					_wallObjects.Add(new Bag(other.gameObject, _wallNormal));
 				}
+				break;
 			}else{
 				//Debug.Log($"celing normal? {f}");
 			}
@@ -183,26 +215,35 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	private void OnCollisionStay(Collision other) {
+		bool dothing = false;
 		if(_groundingObjects.Remove(new Bag(other.gameObject))){
-			bool isGood = false;
+			dothing = true;
+		}
+		if(_wallObjects.Remove(new Bag(other.gameObject))){
+			dothing = true;
+		}
+
+		if(dothing){
 			foreach(ContactPoint contactPoint in other.contacts){
 				float f = Vector3.Angle(contactPoint.normal, Vector3.up);
 				if(f <= MaxSlope){
 					// is floor
 					_groundNormal = contactPoint.normal;
 					_groundingObjects.Add(new Bag(other.gameObject, _groundNormal));
-					isGood = true;
+					_wallNormal = _wallObjects.Count > 0 ? _wallObjects.First().Value : Vector3.zero;
 					break;
 				}else if(f <= 180 - MaxSlope){
 					//Debug.Log($"wall normal? {f}");
 					_wallNormal= contactPoint.normal;
 					_wallObjects.Add(new Bag(other.gameObject, _wallNormal));
+					_groundNormal = _groundingObjects.Count > 0 ? _groundingObjects.First().Value : Vector3.up;
+					break;
 				}else{
 					//Debug.Log($"celing normal? {f}");
+					_wallNormal = _wallObjects.Count > 0 ? _wallObjects.First().Value : Vector3.zero;
+					_groundNormal = _groundingObjects.Count > 0 ? _groundingObjects.First().Value : Vector3.up;
+					break;
 				}
-			}
-			if(!isGood){
-				_groundNormal = Vector3.up;
 			}
 		}
 	}
@@ -211,13 +252,10 @@ public class PlayerMove : MonoBehaviour {
 
 	private void OnCollisionExit(Collision other) {
 		if(_groundingObjects.Remove(new Bag(other.gameObject))){
-			if(_groundingObjects.Count == 0)
-				_groundNormal = Vector3.up;
-			return;
-		}else if(_wallObjects.Remove(new Bag(other.gameObject))){
-			if(_wallObjects.Count == 0)
-				_wallNormal = Vector3.zero;
-			return;
+			_groundNormal = _groundingObjects.Count > 0 ? _groundingObjects.First().Value : Vector3.up;
+		}
+		if(_wallObjects.Remove(new Bag(other.gameObject))){
+			_wallNormal = _wallObjects.Count > 0 ? _wallObjects.First().Value : Vector3.zero;
 		}
 	}
 
