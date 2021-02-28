@@ -11,6 +11,6 @@ public class GunHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        equipped.text = $"Equipped: {playerStats.weapons[playerStats.currentWeaponIndex].Name}";
+        equipped.text = $"Equipped: {playerStats.CurrentWeapon.Name}";
     }
 }

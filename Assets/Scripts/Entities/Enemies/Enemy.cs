@@ -48,6 +48,9 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (_playerTransform == null)
+			return;
+
 		Vector3 dif = _playerTransform.position - transform.position;
 		switch(State){
 			case EnemyState.Wandering:
@@ -75,7 +78,7 @@ public class Enemy : MonoBehaviour {
 				}else{
 					if(_attackTimer <= 0f){
 						_attackTimer += Random.Range(3f,5f);
-						//_attack.Attack(_playerTransform.position);
+						_attack.Attack(_playerTransform.position);
 					}
 					_attackTimer -= Time.fixedDeltaTime;
 				}

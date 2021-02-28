@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBlackHoleGun : AbstractGun
+public class PlayerBlackHoleGun : AbstractPlayerGun
 {
 	[SerializeField, NotNull] private GameObject blackHolePrefab;
-	private bool onCooldown;
 
 	public override string Name => "Void Gun";
 
-	private void Start()
+    public override float Shots => 99;
+
+    private void Start()
 	{
-		onCooldown = false;
+		Cooldown = 0;
 	}
 
     private void OnEnable()
@@ -26,19 +27,12 @@ public class PlayerBlackHoleGun : AbstractGun
 
 	private void ShootBlackHoleGun(bool pressed)
     {
-		if (pressed && !onCooldown)
+		if (pressed && Cooldown <= 0 && Shots >= 1)
 		{
-			StartCoroutine(DoCooldown());
-			Vector3 vel = Camera.main.transform.forward * 3;
-			Rigidbody rigidbody = Instantiate(blackHolePrefab, transform.position + vel / 3f, Quaternion.identity).GetComponent<Rigidbody>();
+			StartCoroutine(DoCooldown(2));
+			Vector3 vel = Camera.main.transform.forward * 5;
+			Rigidbody rigidbody = Instantiate(blackHolePrefab, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
 			rigidbody.velocity = vel;
 		}
-	}
-
-	private IEnumerator DoCooldown()
-	{
-		onCooldown = true;
-		yield return new WaitForSeconds(2);
-		onCooldown = false;
 	}
 }

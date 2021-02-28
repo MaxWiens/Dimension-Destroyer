@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Void immune
   - Pause listener
+  - Destructible Holder
+  - Enemy
   layers:
   - Default
   - TransparentFX
