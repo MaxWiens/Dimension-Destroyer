@@ -17,7 +17,7 @@ public class EnemyAnimator : MonoBehaviour {
 
 	private void Update() {
 		Vector3 v = transform.position - _prevPos;
-		if(v != Vector3.zero){
+		if(!_agent.isOnOffMeshLink && v != Vector3.zero){
 			Vector2 camForward = new Vector2(Camera.main.transform.forward.x, Camera.main.transform.forward.z);
 			float angle = Vector2.SignedAngle(camForward, new Vector2(v.x, v.z));
 			if(angle < 90 && angle > -90){
