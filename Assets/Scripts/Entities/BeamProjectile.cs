@@ -5,12 +5,14 @@ using UnityEngine;
 public class BeamProjectile : MonoBehaviour
 {
     private GameObject user;
+    private bool thingsDeleted;
 
     [SerializeField, NotNull] private EnviornmentManagerSO _enviornmentManager = default;
 
     private HashSet<GameObject> _toDelete = new HashSet<GameObject>();
     private void Start()
     {
+        thingsDeleted = false;
         StartCoroutine(ResizeAndDestroy());
     }
 
@@ -23,6 +25,8 @@ public class BeamProjectile : MonoBehaviour
         StopCoroutine(scaleCoroutine);
         scaleCoroutine = ChangeScaleXZ(-2f);
         StartCoroutine(scaleCoroutine);
+        if (thingsDeleted)
+            _enviornmentManager.RebuildNavMesh();
         yield return new WaitForSeconds(0.5f);
         foreach(GameObject o in _toDelete){
             Destroy(o);
@@ -45,7 +49,15 @@ public class BeamProjectile : MonoBehaviour
     {
         if (other.gameObject != user && !other.gameObject.CompareTag("Void immune"))
         {
-            _toDelete.Add(other.gameObject);
+            if (other.gameObject.CompareTag("Player"))
+            {
+                other.GetComponent<PlayerStats>().TakeDamage();
+            }
+            else
+            {
+                _toDelete.Add(other.gameObject);
+            }
+            thingsDeleted = true;
         }
     }
 

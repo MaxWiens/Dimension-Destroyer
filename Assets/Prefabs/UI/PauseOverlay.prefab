@@ -704,6 +704,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7568767649852934292, guid: fcef26479e1f52140881663ae6d7f555,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcef26479e1f52140881663ae6d7f555, type: 3}
 --- !u!1 &4837423909033661874 stripped
