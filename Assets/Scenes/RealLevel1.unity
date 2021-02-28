@@ -15858,6 +15858,9 @@ MonoBehaviour:
   - {fileID: 9220001809969219693, guid: 9ff2820db323d5b44a55c654d219ec60, type: 3}
   - {fileID: 1291706718069407390, guid: 325951b2ad2ffda4b9d35023e40036ec, type: 3}
   - {fileID: 2137139946356941721, guid: 458f9b9b1e741324c8f8f9c480934ebf, type: 3}
+  tracker: {fileID: 2103679609043182966}
+  minSpawnTime: 30
+  maxSpawnTime: 60
 --- !u!1 &2103679608125789027
 GameObject:
   m_ObjectHideFlags: 0
