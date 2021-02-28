@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ResumeButton : MonoBehaviour
 {
     private GamestateManager gamestateManager;
+
+    [NotNull, SerializeField] private Button button;
+    private void OnEnable()
+    {
+        button.Select();
+    }
 
     private void Start()
     {

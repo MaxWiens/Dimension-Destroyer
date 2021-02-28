@@ -7,7 +7,7 @@ public class BombEnemyAttack : EnemyAttack {
 	public override void Attack(Vector3 targetPosition){
 		BlackHoleProjectile proj = Instantiate(blackHolePrefab, transform.position, Quaternion.identity).GetComponent<BlackHoleProjectile>();
 		proj.expansionTime = 2 / 3f;
-		proj.maxScale = 5f;
+		proj.maxScale = 3f;
 		proj.StartCoroutine(proj.Explode());
 		StartCoroutine(CopyPosition(proj.transform));
 	}

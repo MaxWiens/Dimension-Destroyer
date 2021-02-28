@@ -10,7 +10,7 @@ public class Pickup : MonoBehaviour
         Lens,
     }
 
-    private PickupType pickupType;
+    public PickupType pickupType;
 
     private void OnCollisionEnter(Collision collision)
     {

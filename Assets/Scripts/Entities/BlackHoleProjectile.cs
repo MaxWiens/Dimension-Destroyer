@@ -53,6 +53,7 @@ public class BlackHoleProjectile : MonoBehaviour
     public IEnumerator Explode()
     {
         exploding = true;
+        audioSource.Stop();
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.velocity = Vector3.zero;
         IEnumerator scaleCoroutine = ChangeScale(maxScale / expansionTime);
