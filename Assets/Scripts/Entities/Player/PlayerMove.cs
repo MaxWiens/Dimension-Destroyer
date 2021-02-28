@@ -41,9 +41,34 @@ public class PlayerMove : MonoBehaviour {
 	private void OnJump(bool pressed)
 		=> _jumpPressed = pressed;
 
+	private Vector2 _prevMoveDir = Vector2.zero;
 	public void Move(Vector2 direction){
+
 		if(direction.x != 0 || direction.y != 0){
-			if((IsGrounded && _rigidBody.velocity.sqrMagnitude < MaxSpeed*MaxSpeed) || (!IsGrounded && new Vector2(_rigidBody.velocity.x,_rigidBody.velocity.z).sqrMagnitude < MaxSpeed*MaxSpeed)){
+			Vector2 v2Velocity = new Vector2(_rigidBody.velocity.x, _rigidBody.velocity.z);
+			bool doMove = false;
+			if(IsGrounded && !_isJumping ){
+				//gounded
+				if(_rigidBody.velocity.sqrMagnitude < MaxSpeed*MaxSpeed)
+					doMove = true;
+			}else if(!IsGrounded){
+				// not on ground
+				if(new Vector2(_rigidBody.velocity.x,_rigidBody.velocity.z).sqrMagnitude < MaxSpeed*MaxSpeed)
+					doMove = true;
+			}
+
+			if(!doMove && !_prevMoveDir.Equals(direction)){
+				Vector2 md = direction - v2Velocity.normalized;
+				doMove = true;
+
+				// if(md.sqrMagnitude < 0){
+
+				// }
+			}
+
+
+
+			if(doMove){
 				Vector3 adjustedMoveVec = Vector3.zero;
 				if(_groundNormal.x == 0 && _groundNormal.z == 0f){
 					adjustedMoveVec = new Vector3(direction.x, 0f, direction.y);
@@ -70,6 +95,7 @@ public class PlayerMove : MonoBehaviour {
 			}else if(IsGrounded){
 				_rigidBody.velocity = new Vector3(_rigidBody.velocity.x*0.5f,_rigidBody.velocity.y*0.5f,_rigidBody.velocity.z*0.5f);
 			}
+			_prevMoveDir = direction;
 		}
 		//Debug.DrawRay(transform.position, adjustedMoveVec, Color.cyan);
 	}
@@ -84,17 +110,17 @@ public class PlayerMove : MonoBehaviour {
 		//Debug.Log($"IsGrounded: {IsGrounded}");
 	}
 
-	private bool IsBagPred(Bag b)=>b.Key == null;
+	private bool IsBagNullPred(Bag b)=>b.Key == null;
 
 	private void FixedUpdate() {
-		if(_wallObjects.RemoveAll(IsBagPred) > 0){
+		if(_wallObjects.RemoveAll(IsBagNullPred) > 0){
 			 if(_wallObjects.Count == 0){
 				_wallNormal = Vector3.zero;
 			 }else{
 				_wallNormal = _wallObjects.First().Value;
 			 }
 		}
-		if(_groundingObjects.RemoveAll(IsBagPred) > 0){
+		if(_groundingObjects.RemoveAll(IsBagNullPred) > 0){
 			if(_groundingObjects.Count == 0){
 				_groundNormal = Vector3.up;
 			 }else{
@@ -112,6 +138,9 @@ public class PlayerMove : MonoBehaviour {
 		Debug.DrawRay(transform.position, moveVec);
 
 		Move(new Vector2(moveVec.x, moveVec.z));
+
+		Debug.Log($"isJumping: {_isJumping}");
+		Debug.Log($"isGrounded:{IsGrounded}");
 	}
 
 	public void Jump(){
@@ -142,8 +171,10 @@ public class PlayerMove : MonoBehaviour {
 				break;
 			}else if(f <= 180 - MaxSlope){
 				//Debug.Log($"wall normal? {f}");
-				_wallNormal= contactPoint.normal;
-				_wallObjects.Add(new Bag(other.gameObject, _wallNormal));
+				if(other.gameObject.layer == LayerMask.NameToLayer("Enviornment")){
+					_wallNormal= contactPoint.normal;
+					_wallObjects.Add(new Bag(other.gameObject, _wallNormal));
+				}
 			}else{
 				//Debug.Log($"celing normal? {f}");
 			}
@@ -191,6 +222,7 @@ public class PlayerMove : MonoBehaviour {
 	}
 
 	private struct Bag{
+		private static object nullkeybag = new object();
 		public GameObject Key;
 		public Vector3 Value;
 
@@ -201,6 +233,16 @@ public class PlayerMove : MonoBehaviour {
 		public Bag(GameObject key, Vector3 value){
 			Key = key;
 			Value = value;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is Bag b && b.Key.Equals(Key);
+		}
+
+		public override int GetHashCode()
+		{
+			return Key == null ? nullkeybag.GetHashCode() : Key.GetHashCode();
 		}
 	}
 }
