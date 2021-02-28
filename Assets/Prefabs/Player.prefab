@@ -130,13 +130,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aca118f73b1f1244b657217ec411253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
   energyCells: 0
   lenses: 0
   weapons:
   - {fileID: 7312003292585594893}
   - {fileID: 852320729}
   currentWeaponIndex: 0
-  _inputs: {fileID: 11400000, guid: 21815c38ec3fa104281e4a16018a0a45, type: 2}
+  shielded: 1
 --- !u!64 &4796748368785476169
 MeshCollider:
   m_ObjectHideFlags: 0
