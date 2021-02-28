@@ -78,7 +78,7 @@ public class GamestateManager : MonoBehaviour
 		pausePanel.SetActive(false);
 		hudPanel.SetActive(false);
 		victoryPanel.SetActive(false);
-		Time.timeScale = 1;
+		Time.timeScale = 0;
 	}
 
 	public void SetGameStateVictory()
@@ -91,6 +91,6 @@ public class GamestateManager : MonoBehaviour
 		pausePanel.SetActive(false);
 		hudPanel.SetActive(false);
 		victoryPanel.SetActive(true);
-		Time.timeScale = 1;
+		Time.timeScale = 0;
 	}
 }
