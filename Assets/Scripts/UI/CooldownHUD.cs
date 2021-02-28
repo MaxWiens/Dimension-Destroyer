@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GunHUD : MonoBehaviour
+public class CooldownHUD : MonoBehaviour
 {
     [SerializeField, NotNull] protected PlayerStats playerStats;
     [SerializeField, NotNull] protected TMP_Text equipped;
@@ -11,6 +11,6 @@ public class GunHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        equipped.text = $"Equipped: {playerStats.CurrentWeapon.Name}";
+        equipped.text = $"Cooldown: {playerStats.CurrentWeapon.Cooldown:F2}s";
     }
 }

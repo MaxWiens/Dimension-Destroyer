@@ -6,8 +6,10 @@ public class PlayerStats : MonoBehaviour
 {
     public int energyCells;
     public int lenses;
-    public List<AbstractGun> weapons;
+    public List<AbstractPlayerGun> weapons;
     public int currentWeaponIndex;
+
+    public AbstractPlayerGun CurrentWeapon => weapons[currentWeaponIndex];
 
     [SerializeField, NotNull] private InputManagerSO _inputs;
 

@@ -2,24 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBeamGun : AbstractGun
+public class PlayerBeamGun : AbstractPlayerGun
 {
 	[SerializeField, NotNull] private GameObject beamPrefab;
 
-	private GameObject beamInstance;
-	private bool onCooldown;
-
     public override string Name => "Beam Gun";
+	public override float Shots => playerStats.lenses;
 
-    private void Start()
+	private void Start()
     {
-		onCooldown = false;
+		Cooldown = 0;
 	}
 
     private void OnEnable()
 	{
 		_inputs.Shoot += ShootBeamGun;
-		beamInstance = null;
 	}
 
 	private void OnDisable()
@@ -29,20 +26,13 @@ public class PlayerBeamGun : AbstractGun
 
 	private void ShootBeamGun(bool pressed)
 	{
-		if (pressed && !onCooldown && beamInstance == null && (playerStats.lenses > 0 || true))
+		if (pressed && Cooldown <= 0 && (Shots >= 1))
 		{
 			playerStats.lenses--;
-			StartCoroutine(DoCooldown());
-			beamInstance = Instantiate(beamPrefab, transform.position, Quaternion.identity);
+			StartCoroutine(DoCooldown(1.2f));
+			GameObject beamInstance = Instantiate(beamPrefab, transform.position, Quaternion.identity);
 			BeamProjectile script = beamInstance.GetComponent<BeamProjectile>();
 			script.SetPosition(gameObject, Camera.main.transform);
 		}
 	}
-
-	private IEnumerator DoCooldown()
-    {
-		onCooldown = true;
-		yield return new WaitForSeconds(2);
-		onCooldown = false;
-    }
 }
