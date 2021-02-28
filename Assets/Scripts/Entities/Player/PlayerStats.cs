@@ -11,6 +11,7 @@ public class PlayerStats : MonoBehaviour
     public int lenses;
     public List<AbstractPlayerGun> weapons;
     public int currentWeaponIndex;
+    public bool shielded = true;
 
     public AbstractPlayerGun CurrentWeapon => weapons[currentWeaponIndex];
 
@@ -48,6 +49,14 @@ public class PlayerStats : MonoBehaviour
         // the GamestateManager is already deleted.
         if (gamestateManager != null)
             gamestateManager.SetGameStateDead();
+    }
+
+    public void TakeDamage()
+    {
+        if (shielded)
+            shielded = false;
+        else
+            Destroy(gameObject);
     }
 
     public void SetActiveGun(int index)

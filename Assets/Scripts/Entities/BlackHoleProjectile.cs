@@ -71,7 +71,14 @@ public class BlackHoleProjectile : MonoBehaviour
         {
             if (!g.CompareTag("Void immune"))
             {
-                Destroy(g);
+                if (g.CompareTag("Player"))
+                {
+                    g.GetComponent<PlayerStats>().TakeDamage();
+                }
+                else
+                {
+                    Destroy(g);
+                }
             }
         }
         Destroy(gameObject);

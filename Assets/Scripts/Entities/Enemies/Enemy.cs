@@ -195,7 +195,7 @@ public class Enemy : MonoBehaviour {
 
 	private void Attack()
     {
-		_attackTimer += Random.Range(3f, 5f);
+		_attackTimer += _attack.GetCooldown();
 		_attack.Attack(_targettedPosition);
 	}
 }
