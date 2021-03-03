@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 public class LevelSelect : MonoBehaviour
 {
     public void OnRealityDistoryion(){
-        SceneManager.LoadScene("RealLevel1");
+        SceneManager.LoadScene("TheBigLevel");
     }
 
     public void OnInto(){
-        SceneManager.LoadScene("RealBaseLevel2");
+        SceneManager.LoadScene("IntroLevel");
     }
 }

@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/RealLevel1.unity
     guid: 82b1f69a443d0cd4ead60bccec697324
   - enabled: 1
-    path: Assets/Scenes/RealBaseLevel2.unity
+    path: Assets/Scenes/IntroLevel.unity
     guid: 7c0fef6fd9e93444f90de27dd512a83d
   m_configObjects: {}
